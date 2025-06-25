@@ -8,11 +8,11 @@ import { Status } from "../types/user.types";
 export class User_Subscriptions_Model extends Model {
 
     @Column({
-        type: DataTypes.UUID,
-        defaultValue: uuidv4(),
-        primaryKey: true
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4, 
+    primaryKey: true,
     })
-    Id: string
+  Id: string;
 
     @ForeignKey(() => UserModel)
     @Column({ type: DataTypes.UUID})

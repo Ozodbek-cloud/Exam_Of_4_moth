@@ -8,7 +8,7 @@ import { Movies_Model } from './movies.entites';
 export class Watch_History_Model extends Model {
   @Column({
     type: DataTypes.UUID,
-    defaultValue: uuidv4(),
+    defaultValue: DataTypes.UUIDV4, 
     primaryKey: true,
   })
   Id: string;

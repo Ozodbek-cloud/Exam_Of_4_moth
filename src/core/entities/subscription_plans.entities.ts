@@ -5,11 +5,11 @@ import { User_Subscriptions_Model } from "./user_subscriptions.entities";
 @Table({tableName: "Subscriptions_Plan"})
 export class Subscriptions_Plans_Model extends Model{
     @Column({
-       type: DataTypes.UUID,
-       defaultValue: uuidv4(),
-       primaryKey: true
-    })
-    Id: string
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4, 
+    primaryKey: true,
+  })
+  Id: string;
 
     @Column
     name: string

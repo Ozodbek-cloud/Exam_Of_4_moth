@@ -5,11 +5,11 @@ import { UserModel } from "./user.entities";
 @Table({tableName: "Profiles"})
 export class ProfileModel extends Model{
     @Column({
-        type: DataTypes.UUIDV4,
-        defaultValue: uuidv4(),
-        primaryKey: true
-    })
-    Id: string
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4, 
+    primaryKey: true,
+  })
+  Id: string;
 
     @ForeignKey(() => UserModel)
     @Column({ type: DataTypes.UUID})

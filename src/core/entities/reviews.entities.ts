@@ -7,7 +7,7 @@ import {v4 as uuidv4} from "uuid"
 export class Review_Model extends Model {
   @Column({
     type: DataTypes.UUID,
-    defaultValue: uuidv4(),
+    defaultValue: DataTypes.UUIDV4, 
     primaryKey: true,
   })
   Id: string;

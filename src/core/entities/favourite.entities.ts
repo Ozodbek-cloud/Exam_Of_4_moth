@@ -7,7 +7,7 @@ import { DataTypes } from 'sequelize';
 export class Favorite_Model extends Model {
   @Column({
     type: DataTypes.UUID,
-    defaultValue: uuidv4,
+    defaultValue: DataTypes.UUIDV4, 
     primaryKey: true,
   })
   Id: string;

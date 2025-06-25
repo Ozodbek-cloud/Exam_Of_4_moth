@@ -8,11 +8,11 @@ import { User_Subscriptions_Model } from "./user_subscriptions.entities";
 @Table({tableName: "Users"})
 export class UserModel extends Model{
     @Column({
-        type: DataTypes.UUIDV4,
-        defaultValue: uuidv4(),
-        primaryKey: true
-    })
-    Id : string
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4, 
+    primaryKey: true,
+  })
+  Id: string;
     
     @Column
     username: string
