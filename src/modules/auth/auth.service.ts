@@ -62,7 +62,7 @@ export class AuthService {
         let user = await this.userModel.create({...userData, password:hash})
 
         let token = await this.generateToken({id: user.dataValues.id, role: user.dataValues.role})
-        return {token, user}
+        return {message: "SuccessFully Logined", token, user}
     }
     
 

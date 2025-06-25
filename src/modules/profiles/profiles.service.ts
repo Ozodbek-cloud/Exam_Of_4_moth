@@ -11,7 +11,7 @@ export class ProfilesService {
 
     async create_profile(payload: Required<ProfileDto>) {
         let newProfile = await this.profileModel.create(payload)
-        return newProfile
+        return {sucess:true, data: newProfile}
     }
 
   async get_all_profile() {
@@ -23,43 +23,43 @@ export class ProfilesService {
     ],
   });
 
-  return all_profiles;
+  return {success: true, data: all_profiles};
   }
 
   async get_query_profile(country: string) {
        let profile = await this.profileModel.findAll({
         where: {
             country: country
-        }
+        }, include: [{model: UserModel}],
        })
-       return profile
+       return {success: true, data:profile}
   }
 
   async get_query_by_name_profile(name: string) {
        let profile = await this.profileModel.findAll({
         where: {
             fullname: name
-        }
+        }, include: [{model: UserModel}]
        })
-       return profile
+       return {success: true, data:profile}
   }
 
   async get_one_profile(id: string) {
       let profile = await this.profileModel.findOne({
         where : {
             Id: id
-        }
+        }, include: [{model: UserModel}]
       })
-      return profile
-  }
+     return {success: true, data:profile}
+ }
     
   async get_query_by_phone_profile(phone_number: string) {
        let profile = await this.profileModel.findAll({
         where: {
             phone: phone_number
-        }
+        }, include: [{model: UserModel}]
        })
-       return profile
+       return {success: true, data:profile}
   }
   async updated_profile(id: string, payload: Partial<ProfileDto>) {
   const user = await this.profileModel.findOne({ where: { Id: id } });
@@ -69,7 +69,7 @@ export class ProfilesService {
   }
 
   const updated = await user.update(payload);
-  return updated;
+  return {success: true, data: updated};
 }
 
 }

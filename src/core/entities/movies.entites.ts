@@ -8,6 +8,7 @@ import { Movies_Files_Model } from "./movies.files";
 import { Watch_History_Model } from "./watch_history.entities";
 import { Favorite_Model } from "./favourite.entities";
 import { Review_Model } from "./reviews.entities";
+
 @Table({tableName: "Movies"})
 export class Movies_Model extends Model{
 
@@ -39,6 +40,9 @@ export class Movies_Model extends Model{
         type: DataTypes.DECIMAL(3, 1)
     })
     rating: number
+
+    @Column
+    poster_url: string
 
     @Column({
         type: DataTypes.ENUM(...Object.values(Subscription_type)),
