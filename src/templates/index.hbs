@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Tasdiqlash Kodingiz</title>
+    <style type="text/css">
+        /* Reset styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
+            background-color: #0f2027;
+            color: #ffffff;
+            width: 100% !important;
+            height: 100% !important;
+            line-height: 1.6;
+        }
+        
+        /* Main container */
+        .email-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            padding: 40px 20px;
+        }
+        
+        /* Card container */
+        .card {
+            background-color: #1a1a2e;
+            border: 2px solid #6495ed;
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin: 0 auto;
+            max-width: 400px;
+        }
+        
+        /* Header styles */
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #6495ed;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(100, 149, 237, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #a0a0a0;
+            margin-bottom: 0;
+        }
+        
+        /* Code container */
+        .code-container {
+            background-color: #16213e;
+            border: 2px solid #4169e1;
+            border-radius: 12px;
+            padding: 25px 20px;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .code-label {
+            font-size: 14px;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .verification-code {
+            font-size: 36px;
+            font-weight: bold;
+            color: #6495ed;
+            letter-spacing: 8px;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 10px rgba(100, 149, 237, 0.5);
+            margin: 10px 0;
+        }
+        
+        /* Decorative elements */
+        .code-container::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(45deg, #6495ed, #4169e1, #1e3c72);
+            border-radius: 12px;
+            z-index: -1;
+        }
+        
+        /* Instructions */
+        .instructions {
+            background-color: #0f1419;
+            border-left: 4px solid #6495ed;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .instructions h3 {
+            color: #6495ed;
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .instructions p {
+            color: #cccccc;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+        
+        /* Warning box */
+        .warning {
+            background-color: #2d1b16;
+            border: 1px solid #ff6b35;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .warning-icon {
+            color: #ff6b35;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+  
+        .warning-text {
+            color: #ffcc99;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            text-align: center;
+        }
+        
+        .footer p {
+            color: #888;
+            font-size: 12px;
+            margin: 5px 0;
+        }
+        
+        /* Responsive styles */
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                padding: 20px 10px;
+            }
+            
+            .card {
+                padding: 25px 20px;
+            }
+            
+            .title {
+                font-size: 24px;
+            }
+            
+            .verification-code {
+                font-size: 30px;
+                letter-spacing: 4px;
+            }
+            
+            .instructions {
+                padding: 15px;
+            }
+        }
+        
+        @media only screen and (max-width: 480px) {
+            .verification-code {
+                font-size: 24px;
+                letter-spacing: 2px;
+            }
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .card {
+                background-color: #1a1a2e;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="card">
+            <!-- Header -->
+            <div class="header">
+                <h1 class="title">🔐 Tasdiqlash Kodi</h1>
+                <p class="subtitle">Quyidagi kodni kiriting</p>
+            </div>
+            
+            <!-- Verification Code -->
+            <div class="code-container">
+                <div class="code-label">Sizning kodingiz:</div>
+                <div class="verification-code">{{code}}</div>
+            </div>
+            
+            <!-- Instructions -->
+            <div class="instructions">
+                <h3>📋 Qo'llanma:</h3>
+                <p>
+                    • Ushbu kodni tegishli maydonga kiriting<br>
+                    • Kod 10 daqiqa davomida amal qiladi<br>
+                    • Kodni hech kimga bermang
+                </p>
+            </div>
+            
+            <!-- Warning -->
+            <div class="warning">
+                <span class="warning-icon">⚠️</span>
+                <span class="warning-text">
+                    <strong>Muhim:</strong> Agar siz bu amalni bajarmagansiz, ushbu emailni e'tiborsiz qoldiring va parolingizni o'zgartiring.
+                </span>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <p>Bu avtomatik yuborilgan email hisoblanadi.</p>
+                <p>© 2025 Sizning kompaniyangiz</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
