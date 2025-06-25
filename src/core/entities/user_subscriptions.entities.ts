@@ -1,9 +1,10 @@
 import { DataTypes } from "sequelize";
-import { Table, Column, Model, ForeignKey, BelongsTo } from "sequelize-typescript";
+import { Table, Column, Model, ForeignKey, BelongsTo, HasMany } from "sequelize-typescript";
 import { v4 as uuidv4 } from "uuid"
 import { UserModel } from "./user.entities";
 import { Subscriptions_Plans_Model } from "./subscription_plans.entities";
 import { Status } from "../types/user.types";
+import { Payments_Model } from "./payments.entites";
 @Table({ tableName: "User_Subscriptions" })
 export class User_Subscriptions_Model extends Model {
 
@@ -52,5 +53,6 @@ export class User_Subscriptions_Model extends Model {
     })
     auto_renew: boolean
 
-    
+    @HasMany(() => Payments_Model)
+    payments: Payments_Model[]
 }
