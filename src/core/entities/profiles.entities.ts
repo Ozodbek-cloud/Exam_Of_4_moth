@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { Column, Table, Model, ForeignKey, BelongsTo } from "sequelize-typescript";
-import { v4 as uuidv4} from "uuid"
 import { UserModel } from "./user.entities";
+
 @Table({tableName: "Profiles"})
 export class ProfileModel extends Model{
     @Column({
@@ -26,5 +26,8 @@ export class ProfileModel extends Model{
 
      @Column
      country: string
+
+     @Column
+     avatar_url: string
 
 }

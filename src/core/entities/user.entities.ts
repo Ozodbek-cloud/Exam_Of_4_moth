@@ -33,9 +33,6 @@ export class UserModel extends Model{
     })
     role: UserRole
 
-    @Column
-    avatar_url: string
-
     @HasMany(() => ProfileModel)
     profiles: ProfileModel[]
 

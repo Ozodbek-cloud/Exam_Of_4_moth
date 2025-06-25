@@ -41,7 +41,8 @@ export class Movies_Model extends Model{
     rating: number
 
     @Column({
-        type: DataTypes.ENUM(...Object.values(Subscription_type))
+        type: DataTypes.ENUM(...Object.values(Subscription_type)),
+        defaultValue: Subscription_type.FREE
     })
     subscription_type: Subscription_type
 

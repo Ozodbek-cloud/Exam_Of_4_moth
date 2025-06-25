@@ -61,7 +61,8 @@ export class AuthService {
         let hash = await bcrypt.hash(userData.password, 10)
         let user = await this.userModel.create({...userData, password:hash})
 
-        return this.generateToken({id: user.dataValues.id, role: user.dataValues.role})
+        let token = await this.generateToken({id: user.dataValues.id, role: user.dataValues.role})
+        return {token, user}
     }
     
 
