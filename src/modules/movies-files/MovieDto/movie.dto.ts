@@ -8,11 +8,11 @@ export class Movie_Files_Dto {
     movie_id: string
 
     @IsNotEmpty()
-    file_url: string
+    files: any
 
     @IsNotEmpty()
     quality: ['240p',| '360p', | '480p', |'720p', |'1080p', |'4K',]
 
     @IsNotEmpty()
-    langauge: ['uzb' | 'eng' | 'rus']
+    language: ['uzb' | 'eng' | 'rus']
 }

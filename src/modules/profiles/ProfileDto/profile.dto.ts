@@ -12,7 +12,10 @@ export class ProfileDto{
     @IsNotEmpty()
     fullname: string
 
-    @ApiProperty()
+
+    @ApiProperty({
+        format: "binary"
+    })
     avatar: string
 
     @ApiProperty()

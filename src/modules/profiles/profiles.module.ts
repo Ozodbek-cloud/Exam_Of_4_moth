@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { ProfileModel } from 'src/core/entities/profiles.entities';
 import { ProfilesController } from './profiles.controller';
+import { UserModel } from 'src/core/entities/user.entities';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [SequelizeModule.forFeature([ProfileModel])],
+  imports: [SequelizeModule.forFeature([UserModel]), JwtModule],
   providers: [ProfilesService],
   controllers: [ProfilesController]
 })

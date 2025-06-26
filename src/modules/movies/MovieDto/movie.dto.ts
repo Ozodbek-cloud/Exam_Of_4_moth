@@ -26,7 +26,7 @@ export class MovieDto{
     @IsNotEmpty()
     duration_minutes: string
 
-    @ApiProperty()
+    @ApiProperty({format: "binary"})
     poster: string
 
     @ApiProperty()

@@ -1,69 +1,60 @@
 import { Injectable, NotFoundException, UploadedFile } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { ProfileModel } from 'src/core/entities/profiles.entities';
 import { ProfileDto } from './ProfileDto/profile.dto';
 import { UserModel } from 'src/core/entities/user.entities';
-import { profile } from 'console';
 
 @Injectable()
 export class ProfilesService {
-  constructor(@InjectModel(ProfileModel) private profileModel: typeof ProfileModel) { }
-
-  async create_profile(avatar: Express.Multer.File, payload: Partial<ProfileDto>) {
-    let avatarUrl = `/uploads/avatars${avatar.filename}`
-    let newProfile = await this.profileModel.create({ ...payload, avatar_url: avatarUrl })
-    return { sucess: true, data: newProfile }
-  }
+  constructor(@InjectModel(UserModel) private userModel: typeof UserModel) { }
 
   async get_all_profile() {
-    const all_profiles = await this.profileModel.findAll({
-      include: [
-        {
-          model: UserModel,
-        },
-      ],
-    });
+    const all_profiles = await this.userModel.findAll();
 
     return { success: true, data: all_profiles };
   }
 
   async get_query_profile(country: string) {
-    let profile = await this.profileModel.findAll({
+    let profile = await this.userModel.findAll({
       where: {
         country: country
-      }, include: [{ model: UserModel }],
+      }, 
     })
+    if (!profile) throw new NotFoundException(`this ${country} is not found`)
     return { success: true, data: profile }
   }
 
   async get_query_by_name_profile(name: string) {
-    let profile = await this.profileModel.findAll({
+    let profile = await this.userModel.findAll({
       where: {
-        fullname: name
-      }, include: [{ model: UserModel }]
+        username: name
+      }, 
     })
+    if (!profile) throw new NotFoundException(`this ${name} is not found`)
     return { success: true, data: profile }
   }
 
   async get_one_profile(id: string) {
-    let profile = await this.profileModel.findOne({
+    
+    let profile = await this.userModel.findOne({
       where: {
         Id: id
-      }, include: [{ model: UserModel }]
+      }, 
     })
+    
+    if (!profile) throw new NotFoundException(`this ${id} is not found`)
     return { success: true, data: profile }
   }
 
   async get_query_by_phone_profile(phone_number: string) {
-    let profile = await this.profileModel.findAll({
+    let profile = await this.userModel.findAll({
       where: {
         phone: phone_number
-      }, include: [{ model: UserModel }]
+      }, 
     })
     return { success: true, data: profile }
   }
   async updated_profile(updated_avatar: Express.Multer.File, id: string, payload: Partial<ProfileDto>) {
-    const user = await this.profileModel.findOne({ where: { Id: id } });
+    const user = await this.userModel.findOne({ where: { Id: id } });
     const updated_url = `/uploads/avatars/${updated_avatar.filename}`
     if (!user) {
       throw new NotFoundException(`Profile with id ${id} not found`);

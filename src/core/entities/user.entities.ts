@@ -2,7 +2,6 @@ import { Column, Table, Model, PrimaryKey, HasMany } from "sequelize-typescript"
 import { DataTypes } from "sequelize";
 import { v4 as uuidv4} from "uuid"
 import { UserRole } from "../types/user.types";
-import { ProfileModel } from "./profiles.entities";
 import { User_Subscriptions_Model } from "./user_subscriptions.entities";
 import { Movies_Model } from "./movies.entites";
 import { Favorite_Model } from "./favourite.entities";
@@ -28,13 +27,25 @@ export class UserModel extends Model{
     password: string
 
     @Column({
+      defaultValue: null
+    })
+    phone: string
+
+    @Column({
+      defaultValue: null
+    })
+    country: string
+
+    @Column({
+      defaultValue: null
+    })
+    avatar_url?: string
+
+    @Column({
         type: DataTypes.ENUM(...Object.values(UserRole)),
-        defaultValue: UserRole.USER
+        defaultValue: UserRole.ADMIN
     })
     role: UserRole
-
-    @HasMany(() => ProfileModel)
-    profiles: ProfileModel[]
 
     @HasMany(() => User_Subscriptions_Model)
     user_subscriptions: User_Subscriptions_Model[]
