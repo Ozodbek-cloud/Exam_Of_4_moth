@@ -13,6 +13,9 @@ export class ProfileDto{
     fullname: string
 
     @ApiProperty()
+    avatar: string
+
+    @ApiProperty()
     @IsString()
     @IsNotEmpty()
     phone: string
@@ -22,8 +25,5 @@ export class ProfileDto{
     @IsNotEmpty()
     country: string
 
-    @ApiProperty()
-    @IsString()
-    @IsNotEmpty()
-    avatar_url: string
+    
 }

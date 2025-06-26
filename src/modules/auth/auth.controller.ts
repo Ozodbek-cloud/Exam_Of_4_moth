@@ -20,7 +20,7 @@ export class AuthController {
     @ApiOperation({ summary: "Foydalanuvchini Login qilish va Emaildagi code bilan tasdiqlash"})
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
-    @Post('verify')
+    @Post('login')
     Login(@Body() payload: VerificationDto) {
         return this.authService.verify(payload)
     }

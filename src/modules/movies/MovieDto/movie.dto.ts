@@ -27,6 +27,9 @@ export class MovieDto{
     duration_minutes: string
 
     @ApiProperty()
+    poster: string
+
+    @ApiProperty()
     @IsNotEmpty()
     rating: string
 

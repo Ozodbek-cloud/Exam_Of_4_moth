@@ -1,8 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import { Movies_Model } from 'src/core/entities/movies.entites';
 import { MovieDto } from './MovieDto/movie.dto';
+import { Movies_Files_Model } from 'src/core/entities/movies.files';
+import { Favorite_Model } from 'src/core/entities/favourite.entities';
+import { Review_Model } from 'src/core/entities/reviews.entities';
 
 @Injectable()
 export class MoviesService {
@@ -45,6 +48,17 @@ export class MoviesService {
             message: 'Movie successfully created',
             data: created
         };
+    }
+
+    async get_by_slug(slug: string) {
+       let get_Slug = await this.moviesModel.findAll({
+        where: {
+            slug: slug
+        }, include: [{model: Movies_Files_Model}, {model: Favorite_Model}, {model: Review_Model}]
+       })
+       if (!get_Slug) throw new BadRequestException(`this ${slug} is not found`)
+
+    return get_Slug
     }
 
 }

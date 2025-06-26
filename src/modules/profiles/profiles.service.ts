@@ -9,8 +9,9 @@ import { profile } from 'console';
 export class ProfilesService {
     constructor(@InjectModel(ProfileModel) private profileModel: typeof ProfileModel) {}
 
-    async create_profile(payload: Required<ProfileDto>) {
-        let newProfile = await this.profileModel.create(payload)
+    async create_profile(avatar: Express.Multer.File, payload: Partial<ProfileDto>) {
+      let avatarUrl = `/uploads/avatars${avatar.filename}`
+        let newProfile = await this.profileModel.create({...payload, avatar_url: avatarUrl})
         return {sucess:true, data: newProfile}
     }
 

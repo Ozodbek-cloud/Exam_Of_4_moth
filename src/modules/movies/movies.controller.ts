@@ -1,17 +1,17 @@
-import { Body, Controller, Get, Post, Query, UnsupportedMediaTypeException, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UnsupportedMediaTypeException, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from "uuid"
 import { extname } from 'path';
 import { MovieDto } from './MovieDto/movie.dto';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiConsumes, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('movies')
 export class MoviesController {
     constructor(private readonly movieService: MoviesService) { }
 
-    @ApiOperation({ summary: "Bu Umumiy Search" })
+    @ApiOperation({ summary: "Bu Umumiy Search Querylar bilan" })
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
     @Get('search')
@@ -23,7 +23,8 @@ export class MoviesController {
         return this.movieService.get_movies(pageNumber, limitNumber, category, search, subscriptionType);
     }
 
-    @ApiOperation({ summary: "Bu Movie Poster qoshish Apisi"})
+    @ApiOperation({ summary: "Bu Movie Poster qoshish Apis, From Datadan qoshiladi"})
+    @ApiConsumes('multipart/form-data')
     @ApiResponse({ status: 201, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
     @Post('add/movie')
@@ -46,6 +47,14 @@ export class MoviesController {
     }))
     createMovie(@UploadedFile() poster: Express.Multer.File, @Body() payload: MovieDto) {
         return this.movieService.createMovie(payload, poster)
+    }
+
+    @ApiOperation({ summary: "Bu Movie ni Slug orqali qidirish Paramdan"})
+    @ApiResponse({ status: 201, description: 'Success' })
+    @ApiResponse({ status: 404, description: 'UnSuccess' })
+    @Get('/:slug')
+    GetSlug(@Param('slug') slug: string) {
+        return this.movieService.get_by_slug(slug)
     }
 }
 
