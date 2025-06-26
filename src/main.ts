@@ -11,5 +11,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api')
   await app.listen(process.env.PORT ?? 3000);
+  console.log(`http://localhost:4000/api_ozodbek_swagger`);
+  
 }
 bootstrap();

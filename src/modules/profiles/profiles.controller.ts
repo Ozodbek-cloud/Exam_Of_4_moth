@@ -32,6 +32,7 @@ export class ProfilesController {
                callback(null, true)
           }
      }))
+
      CreateProfile(@UploadedFile() avatar: Express.Multer.File, @Body() payload: ProfileDto) {
           return this.profileService.create_profile(avatar, payload)
      }
@@ -76,12 +77,30 @@ export class ProfilesController {
           return this.profileService.get_query_by_phone_profile(phone)
      }
 
-     @ApiOperation({ summary: "Bir dona Profilni  Telefon raqami  boyicha olish" })
+     @ApiOperation({ summary: "Bir dona Profilni Updated qilish From Datdan "})
+     @ApiConsumes('multipart/form-data')
      @ApiResponse({ status: 200, description: 'Success' })
      @ApiResponse({ status: 404, description: 'UnSuccess' })
+     @UseInterceptors(FileInterceptor('updated_avatar', {
+        storage: diskStorage({
+            destination: "./uploads/avatars",
+            filename: (req, file, cb) => {
+                let posterName = uuidv4() + "_" + extname(file.originalname)
+                cb(null, posterName)
+            }
+        }),
+        fileFilter: (req, file, callback) => {
+            let allowed: string[] = ['image/jpeg', 'image/jpg', 'image/png']
+            if (!allowed.includes(file.mimetype)) {
+                callback(new UnsupportedMediaTypeException("File tpe must be .jpg | .jpeg | .png "), false)
+
+            }
+            callback(null, true)
+        }
+    }))
      @Put('update/profile/:id')
-     updatedProfile(@Param('id') id: string, @Body() payload: Partial<ProfileDto>) {
-          return this.profileService.updated_profile(id, payload)
+     updatedProfile(@Param('id') id: string, @UploadedFile() updated_avatar: Express.Multer.File, @Body() payload: Partial<ProfileDto>) {
+          return this.profileService.updated_profile(updated_avatar,id, payload)
      }
 
 }
