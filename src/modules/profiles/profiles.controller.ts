@@ -12,7 +12,7 @@ import { Auth } from 'src/core/decorator/user.decorator';
 export class ProfilesController {
      constructor(private readonly profileService: ProfilesService) { }
 
-     @Auth(UserRole.USER)
+     @Auth(UserRole.USER, UserRole.ADMIN)
      @ApiBearerAuth()
      @ApiOperation({ summary: "Foydalanuvchini Hamma Profillarini olish" })
      @ApiResponse({ status: 200, description: 'Success' })
@@ -22,7 +22,7 @@ export class ProfilesController {
           return this.profileService.get_all_profile()
      }
 
-     @Auth(UserRole.USER)
+     @Auth(UserRole.USER, UserRole.ADMIN)
      @ApiBearerAuth()
      @ApiOperation({ summary: "Bir dona Profilni olish Param orqali" })
      @ApiResponse({ status: 200, description: 'Success' })
@@ -32,7 +32,7 @@ export class ProfilesController {
           return this.profileService.get_one_profile(id)
      }
 
-     @Auth(UserRole.USER)
+     @Auth(UserRole.USER, UserRole.ADMIN)
      @ApiBearerAuth()
      @ApiOperation({ summary: "Bir dona Profilni Shahar Boyicha olish Query orqali" })
      @ApiResponse({ status: 200, description: 'Success' })
@@ -42,7 +42,7 @@ export class ProfilesController {
           return this.profileService.get_query_profile(country)
      }
 
-     @Auth(UserRole.USER)
+     @Auth(UserRole.USER, UserRole.ADMIN)
      @ApiBearerAuth()
      @ApiOperation({ summary: "Bir dona Profilni  Ismi boyicha olish Query orqali" })
      @ApiResponse({ status: 200, description: 'Success' })

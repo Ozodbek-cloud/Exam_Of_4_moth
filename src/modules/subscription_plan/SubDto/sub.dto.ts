@@ -22,8 +22,5 @@ export class SubscriptionDto{
     @IsNotEmpty()
     feautures: string[]
 
-    @ApiProperty()
-    @IsBoolean()
-    @IsNotEmpty()
-    is_active: boolean
+
 }

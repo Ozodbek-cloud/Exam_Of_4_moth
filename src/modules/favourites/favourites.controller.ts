@@ -23,7 +23,6 @@ export class FavouritesController {
     @ApiOperation({ summary: "Bu Favourite Hammasini olish"})
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
-    @Auth(UserRole.USER)
     @Get('all/favourites')
     Get() {
         return this.favouriteService.get_favourites()
@@ -34,7 +33,6 @@ export class FavouritesController {
     @ApiOperation({ summary: "Bu Favourite Hammasini olish"})
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
-    @Auth(UserRole.USER)
     @Get('delete/:movie_id')
     Delete(@Param('movie_id') movie_id: string) {
         return this.favouriteService.delete_favourite(movie_id)

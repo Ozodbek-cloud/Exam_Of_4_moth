@@ -25,7 +25,7 @@ export class Subscriptions_Plans_Model extends Model{
      @Column({
         type: DataTypes.JSON
      })
-     features: object
+     features: string
 
      @Column({
         type: DataTypes.BOOLEAN,

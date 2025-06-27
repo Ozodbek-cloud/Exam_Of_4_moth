@@ -7,9 +7,5 @@ import { Movie_Files_Dto } from './MovieDto/movie.dto';
 export class MoviesFilesService {
     constructor(@InjectModel(Movies_Files_Model) private moviesFileModel: typeof Movies_Files_Model) {}
 
-    async add_movie_file(file: Express.Multer.File, payload: Required<Movie_Files_Dto>) {
-        let files = `/uploads/files${file.originalname}`
-        let add_file = await this.moviesFileModel.create({...payload, file: files})
-        return add_file
-    }
+    
 }

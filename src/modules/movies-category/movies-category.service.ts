@@ -22,11 +22,10 @@ export class MoviesCategoryService {
     }
 
     async delete_cat(id: string) {
-        let find = await this.movies_category.findOne({
-            where: {
-                Id: id
-            }
-        })
-        if (!find) throw new NotFoundException(`this ${id} is not Found`)
+        let destroyed = await this.movies_category.destroy({where: {Id: id}})
+        
+        if (!destroyed) throw new NotFoundException(`this ${id} is not Found`)
+        
+        return {success: true, data: destroyed}
     }
 }

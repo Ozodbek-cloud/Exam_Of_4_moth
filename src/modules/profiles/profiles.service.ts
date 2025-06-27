@@ -51,6 +51,7 @@ export class ProfilesService {
         phone: phone_number
       }, 
     })
+    if (!profile) throw new NotFoundException(`this ${phone_number} is not found`)
     return { success: true, data: profile }
   }
   async updated_profile(updated_avatar: Express.Multer.File, id: string, payload: Partial<ProfileDto>) {

@@ -33,7 +33,7 @@ export class Payments_Model extends Model {
     @Column({
         type: DataTypes.JSON,
     })
-    payment_details: object;
+    payment_details: string;
 
     @Column({
         type: DataTypes.ENUM(...Object.values(Payment_Status))

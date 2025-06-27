@@ -14,8 +14,10 @@ export class FavouritesService {
     }
 
     async post_favourites(payload: Partial<favouriteDto>) {
-        
-        if (!payload.user_id) throw new BadRequestException(`${payload.user_id} is Incorrect check again`)
+        const {user_id, movie_id} = payload
+
+        if (!user_id) throw new BadRequestException(`${user_id} is Incorrect check again`)
+        if (!movie_id) throw new BadRequestException(`${movie_id} is Incorrect check again`)
 
         let favorite = await this.favouriteModel.create(payload)
 
@@ -43,6 +45,7 @@ export class FavouritesService {
             movie_id: movie_id
         }})
         if (!deleted) throw new NotFoundException(`this ${movie_id} is not found`)
+        return deleted
     }
 }
 

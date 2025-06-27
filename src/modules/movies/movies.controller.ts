@@ -79,6 +79,12 @@ export class MoviesController {
     return this.movieService.createMovie(req['user'].id, payload, poster)
   }
 
+  @Auth(UserRole.ADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Yangi kinoni id bilan  qoshish ' })
+  @ApiConsumes('multipart/form-data')
+  @ApiResponse({ status: 201, description: 'Kino muvaffaqiyatli qoshildi' })
+  @ApiResponse({ status: 415, description: 'Notogri fayl turi ' })
   @Post("/:id/files")
   @UseInterceptors(FileInterceptor('video',
     {

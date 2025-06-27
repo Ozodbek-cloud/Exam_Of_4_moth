@@ -41,6 +41,7 @@ export class MoviesService {
     }
     async createMovie(id:string, payload: MovieDto, poster: Express.Multer.File) {
         let newMovie = await this.moviesModel.create({...payload,user_id:id,poster_url:poster.path})
+         if (!id) throw new NotFoundException(`this ${id} is not Found`)
 
         return {
             success: true,
@@ -50,11 +51,14 @@ export class MoviesService {
     }
 
     async create(id:string, payload: Movie_Files_Dto, filename: Express.Multer.File) {
+        if (!id) throw new NotFoundException(`this ${id} is not Found`)
+
+        if (!filename) throw new NotFoundException(`this ${filename} is not Found`)
+            
         let movie = await this.moviesModel.findOne({
             where: {
                 Id: id
             }
-            
         })
         if(!movie){
                throw new NotFoundException("Movie spesific id not found") 

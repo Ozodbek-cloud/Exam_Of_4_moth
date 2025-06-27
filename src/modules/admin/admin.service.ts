@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { UserModel } from 'src/core/entities/user.entities';
 import { AdminDto } from './adminDto/admin.dto';
@@ -19,6 +19,7 @@ export class AdminService {
     
     async delete_admin(id: string) {
         let deleted = await this.userModel.destroy({where: {Id: id}})
+         if (!deleted) throw new NotFoundException(`this ${id} is not found`)
         return deleted
     }
 }
