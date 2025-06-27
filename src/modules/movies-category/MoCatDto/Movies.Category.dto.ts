@@ -2,20 +2,15 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsString } from "class-validator";
 
 
-export class CategoryDto{
+
+export class MoCatDto{
+    @ApiProperty()
+    @IsString()
+    @IsNotEmpty()
+    movie_id: string
 
     @ApiProperty()
     @IsString()
     @IsNotEmpty()
-    name: string
-
-    @ApiProperty()
-    @IsString()
-    @IsNotEmpty()
-    slug: string
-
-    @ApiProperty()
-    @IsString()
-    @IsNotEmpty()
-    description: string
+    category_id: string
 }

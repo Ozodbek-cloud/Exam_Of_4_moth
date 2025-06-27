@@ -39,8 +39,8 @@ export class MoviesService {
 
         return { success: true, data: { movies, pagination: { total, page, limit, pages: totalPages } } };
     }
-    async createMovie(id:string, payload: MovieDto, poster: string) {
-        let newMovie = await this.moviesModel.create({...payload,user_id:id,poster_url:poster})
+    async createMovie(id:string, payload: MovieDto, poster: Express.Multer.File) {
+        let newMovie = await this.moviesModel.create({...payload,user_id:id,poster_url:poster.path})
 
         return {
             success: true,
@@ -49,17 +49,17 @@ export class MoviesService {
         }
     }
 
-    async create(id:string, payload: Movie_Files_Dto, filename: string) {
+    async create(id:string, payload: Movie_Files_Dto, filename: Express.Multer.File) {
         let movie = await this.moviesModel.findOne({
             where: {
-                movie_id: id
+                Id: id
             }
             
         })
         if(!movie){
                throw new NotFoundException("Movie spesific id not found") 
         }
-        let newMovieFile = await this.moviesFileModel.create({...payload,movie_id: id, file_url: filename})
+        let newMovieFile = await this.moviesFileModel.create({...payload,Id: id, file_url: filename.path})
         return {
             success: true,
             message: "new MovieFile created",

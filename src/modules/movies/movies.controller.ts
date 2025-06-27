@@ -1,13 +1,14 @@
-import { Body, Controller, Get,  Param, Post, Query, Req, UnsupportedMediaTypeException, UploadedFile, UseInterceptors,} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req, UnsupportedMediaTypeException, UploadedFile, UseInterceptors, } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { extname } from 'path';
 import { MovieDto } from './MovieDto/movie.dto';
-import { ApiConsumes, ApiOperation,  ApiResponse, ApiTags, ApiQuery, ApiParam, ApiBody, ApiBearerAuth} from '@nestjs/swagger';
+import { ApiConsumes, ApiOperation, ApiResponse, ApiTags, ApiQuery, ApiParam, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { Auth } from 'src/core/decorator/user.decorator';
 import { UserRole } from 'src/core/types/user.types';
+import { Movie_Files_Dto } from '../movies-files/MovieDto/movie.dto';
 
 @ApiTags('Movies')
 @Controller('movies')
@@ -75,9 +76,34 @@ export class MoviesController {
     }),
   )
   createMovie(@Req() req: Request, @UploadedFile() poster: Express.Multer.File, @Body() payload: MovieDto) {
-    console.log(req['user'].id)
+    return this.movieService.createMovie(req['user'].id, payload, poster)
   }
 
+  @Post("/:id/files")
+  @UseInterceptors(FileInterceptor('video',
+    {
+      storage: diskStorage({
+        destination: './uploads/videos',
+        filename: (req, file, cb) => {
+          let videoName = uuidv4() + "_" + extname(file.originalname)
+          cb(null, videoName)
+        }
+      }),
+      fileFilter: (req, file, callback) => {
+        let allowed = ['video/mp4', 'video/webm']
+        if (!allowed.includes(file.mimetype)) {
+          callback(new UnsupportedMediaTypeException('Only  .mp4 | webm types are allowed'), false)
+        }
+        callback(null, true)
+      }
+    }))
+  create(
+    @Param("id") id: string,
+    @UploadedFile() video: Express.Multer.File,
+    @Body() payload: Movie_Files_Dto
+  ) {
+    return this.movieService.create(id, payload, video)
+  }
 
   @Auth(UserRole.ADMIN, UserRole.USER)
   @ApiBearerAuth()

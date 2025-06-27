@@ -11,12 +11,12 @@ export class CategoriesService {
 
     async create_category(payload: Required<CategoryDto>) {
         let newCat = await this.categoryModel.create(payload)
+        return newCat
     }
 
     async get_all() {
-        let all = this.categoryModel.findAll({
-            include: {model: Movies_Categories_Model}
-        })
+        let all = await this.categoryModel.findAll()
+        return all
     }
 
     async put_category(id: string, payload: Required<CategoryDto>) {
