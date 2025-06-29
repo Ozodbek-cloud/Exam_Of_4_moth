@@ -2,23 +2,27 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import Redis from 'ioredis';
 
 @Injectable()
-export class RedisService implements OnModuleInit{
-    private client : Redis
-    async onModuleInit() {
-        this.client= new Redis()
+export class RedisService implements OnModuleInit {
+  private client: Redis;
+
+  async onModuleInit() {
+    const redisUrl = process.env.REDIS_URL;
+    if (!redisUrl) {
+      throw new Error('REDIS_URL is not defined in .env');
     }
 
-    async set(key: string, code:string, second: number) {
-        await this.client.set(key, code, 'EX', second)
-    }
+    this.client = new Redis(redisUrl); 
+  }
 
-    async get(key: string) {
-      return  await this.client.get(key)
-    }
+  async set(key: string, value: string, seconds: number) {
+    await this.client.set(key, value, 'EX', seconds);
+  }
 
-    async del(key:string) {
-        await this.client.del(key)
-    }
+  async get(key: string) {
+    return await this.client.get(key);
+  }
 
-     
+  async del(key: string) {
+    await this.client.del(key);
+  }
 }

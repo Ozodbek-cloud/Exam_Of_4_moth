@@ -10,7 +10,7 @@ export class FavouritesController {
     constructor(private readonly favouriteService: FavouritesService) { }
     @Auth(UserRole.USER,UserRole.ADMIN)
     @ApiBearerAuth()
-    @ApiOperation({ summary: "Bu Movieni Favourites Bolimiga qoshish"})
+    @ApiOperation({ summary: "Bu Movieni Favourites Bolimiga qoshish FAQAT (ADMIN VA USER UCHUN)"})
     @ApiResponse({ status: 201, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
     @Post('create')
@@ -20,7 +20,7 @@ export class FavouritesController {
 
     @ApiBearerAuth()
     @Auth(UserRole.USER, UserRole.ADMIN)
-    @ApiOperation({ summary: "Bu Favourite Hammasini olish"})
+    @ApiOperation({ summary: "Bu Favourite Hammasini olish (ADMIN VA USER UCHUN)"})
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
     @Get('all/favourites')
@@ -30,11 +30,21 @@ export class FavouritesController {
 
     @ApiBearerAuth()
     @Auth(UserRole.USER, UserRole.ADMIN)
-    @ApiOperation({ summary: "Bu Favourite Hammasini olish"})
+    @ApiOperation({ summary: "Bu Favourite Hammasini olish (ADMIN VA USER UCHUN)"})
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
     @Delete('delete/:movie_id')
     Delete(@Param('movie_id') movie_id: string) {
         return this.favouriteService.delete_favourite(movie_id)
+    }
+
+    @ApiBearerAuth()
+    @Auth(UserRole.USER, UserRole.ADMIN)
+    @ApiOperation({ summary: "Bu Favourite id bilan olish (ADMIN VA USER UCHUN)"})
+    @ApiResponse({ status: 200, description: 'Success' })
+    @ApiResponse({ status: 404, description: 'UnSuccess' })
+    @Get('/:id')
+    Get_One(@Param('id') id: string) {
+        return this.favouriteService.Get_One_favourite(id)
     }
 }

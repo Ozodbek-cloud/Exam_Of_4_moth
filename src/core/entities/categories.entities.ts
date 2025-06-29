@@ -31,5 +31,5 @@ export class Categories_Model extends Model{
     movies_id: string
 
     @BelongsTo(() => Movies_Model)
-    movie: Movies_Model
+    movies: Movies_Model
 }

@@ -8,8 +8,8 @@ import { Favorite_Model } from 'src/core/entities/favourite.entities';
 import { Review_Model } from 'src/core/entities/reviews.entities';
 import { Movie_Files_Dto } from '../movies-files/MovieDto/movie.dto';
 import { Categories_Model } from 'src/core/entities/categories.entities';
-import { Movies_Categories_Model } from 'src/core/entities/movie.cat';
 import { MovieQuery } from './MovieDto/movie.query.dto';
+import { Updated_MovieDto } from './MovieDto/for_updated_movie.dto';
 
 @Injectable()
 export class MoviesService {
@@ -106,5 +106,30 @@ export class MoviesService {
 
         return get_Slug
     }
+    async delete_movie(id: string) {
+       let fin_delete = await this.moviesModel.destroy({
+           where: {
+            Id: id
+           }
+       })
+       if (!fin_delete) throw new NotFoundException(`this ${id} is not Found`)
+       return { success: true, data: fin_delete}
+    }
+
+    async put_movie(id : string, payload: Updated_MovieDto) {
+        let find = await this.moviesModel.findOne(
+            {where: {
+                Id: id
+            }}
+        )
+        if (!id) throw new NotFoundException(` this ${id} is not Found`)
+
+        let updated = await find?.update(payload)
+        return {success: true, data: updated}
+    }
+   async Get_All() {
+        let all = await this.moviesModel.findAll()
+        return all  
+  }
 
 }

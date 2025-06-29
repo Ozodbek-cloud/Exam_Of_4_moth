@@ -13,7 +13,7 @@ export class MoviesCategoryController {
     @ApiBearerAuth()
     @Auth(UserRole.ADMIN)
     @Post('create')
-    @ApiOperation({ summary: 'Yangi kino kategoriyasini yaratish' })
+    @ApiOperation({ summary: 'Yangi kino kategoriyasini yaratish (FAQAT ADMIN UCHUN)' })
     @ApiResponse({ status: 201, description: 'Kategoriya muvaffaqiyatli yaratildi' })
     Create(@Body() payload: MoCatDto) {
         return this.movie_categoryService.create_movie_category(payload);
@@ -22,7 +22,7 @@ export class MoviesCategoryController {
     @Auth(UserRole.ADMIN)
     @ApiBearerAuth()
     @Get('all')
-    @ApiOperation({ summary: 'Barcha kino kategoriyalarini olish' })
+    @ApiOperation({ summary: 'Barcha kino kategoriyalarini olish (FAQAT ADMIN UCHUN)' })
     @ApiResponse({ status: 200, description: 'Barcha kategoriyalar ro‘yxati' })
     Get_All() {
         return this.movie_categoryService.Get_All();
@@ -31,7 +31,7 @@ export class MoviesCategoryController {
     @Auth(UserRole.ADMIN)
     @ApiBearerAuth()
     @Delete('/:id')
-    @ApiOperation({ summary: 'Kategoriya Id orqali ochirish' })
+    @ApiOperation({ summary: 'Kategoriya Id orqali ochirish (FAQAT ADMIN UCHUN)' })
     @ApiParam({ name: 'id', description: 'Kategoriya Id raqami' })
     @ApiResponse({ status: 200, description: 'Kategoriya muvaffaqiyatli ochirildi' })
     Delete_Category(@Param('id') id: string) {

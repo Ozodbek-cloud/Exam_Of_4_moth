@@ -13,9 +13,9 @@ export class CategoriesController {
     @Auth(UserRole.ADMIN)
     @ApiBearerAuth()
     @Post('add')
-    @ApiOperation({ summary: 'Yangi kategoriya qoshish (Admin Orqali)' })
+    @ApiOperation({ summary: 'Yangi kategoriya qoshish (Admin UCHUN)' })
     @ApiBody({ type: CategoryDto })
-    @ApiResponse({ status: 201, description: 'Kategoriya muvaffaqiyatli yaratildi (Admin Orqali)' })
+    @ApiResponse({ status: 201, description: 'Kategoriya muvaffaqiyatli yaratildi (Admin UCHUN)' })
     AddCategory(@Body() payload: CategoryDto) {
         return this.catergoryService.create_category(payload);
     }
@@ -23,7 +23,7 @@ export class CategoriesController {
     @ApiBearerAuth()
     @Auth(UserRole.ADMIN)
     @Get('all')
-    @ApiOperation({ summary: 'Barcha kategoriyalar royxatini olish (Admin Orqali)' })
+    @ApiOperation({ summary: 'Barcha kategoriyalar royxatini olish (Admin UCHUN)' })
     @ApiResponse({ status: 200, description: 'Kategoriya royxati qaytarildi' })
     AllCategory() {
         return this.catergoryService.get_all();
@@ -32,7 +32,7 @@ export class CategoriesController {
     @ApiBearerAuth()
     @Auth(UserRole.ADMIN)
     @Put('change/:id')
-    @ApiOperation({ summary: 'Kategoriya malumotlarini ozgartirish (Admin Orqali)' })
+    @ApiOperation({ summary: 'Kategoriya malumotlarini ozgartirish (Admin UCHUN)' })
     @ApiParam({ name: 'id', description: 'Ozgartirilayotgan kategoriyaning Id raqami' })
     @ApiBody({ type: CategoryDto })
     @ApiResponse({ status: 200, description: 'Kategoriya muvaffaqiyatli yangilandi' })
@@ -43,7 +43,7 @@ export class CategoriesController {
     @ApiBearerAuth()
     @Auth(UserRole.ADMIN)
     @Delete('delete/:id')
-    @ApiOperation({ summary: 'Kategoriya ochirish (Admin Orqali)' })
+    @ApiOperation({ summary: 'Kategoriya ochirish (Admin UCHUN)' })
     @ApiParam({ name: 'id', description: 'Ochiriladigan kategoriyaning Id raqami' })
     @ApiResponse({ status: 200, description: 'Kategoriya ochirildi' })
     DeleteCategory(@Param('id') id: string) {

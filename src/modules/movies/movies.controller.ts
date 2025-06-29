@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, Req, UnsupportedMediaTypeException, UploadedFile, UseInterceptors, } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UnsupportedMediaTypeException, UploadedFile, UseInterceptors, } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -11,6 +11,7 @@ import { UserRole } from 'src/core/types/user.types';
 import { Movie_Files_Dto } from '../movies-files/MovieDto/movie.dto';
 import { TSVECTOR } from 'sequelize';
 import { MovieQuery } from './MovieDto/movie.query.dto';
+import { Updated_MovieDto } from './MovieDto/for_updated_movie.dto';
 
 @ApiTags('Movies')
 @Controller('movies')
@@ -20,7 +21,7 @@ export class MoviesController {
 
   @Auth(UserRole.ADMIN, UserRole.USER)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Umumiy qidiruv (search, category, page, subscription)' })
+  @ApiOperation({ summary: 'Umumiy qidiruv (search, category, page, subscription) FAQAT ADMIN VA USER UCHUN' })
   @ApiResponse({ status: 200, description: 'Muvaffaqiyatli topildi' })
   @ApiResponse({ status: 404, description: 'Topilmadi' })
   @ApiQuery({ name: 'page', required: false, type: String, description: 'Sahifa raqami' })
@@ -35,7 +36,7 @@ export class MoviesController {
 
   @Auth(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Yangi kinoni qo‘shish (poster bilan)' })
+  @ApiOperation({ summary: 'Yangi kinoni qo‘shish (poster bilan FAQAT ADMIN UCHUN)' })
   @ApiConsumes('multipart/form-data')
   @ApiResponse({ status: 201, description: 'Kino muvaffaqiyatli qo‘shildi' })
   @ApiResponse({ status: 415, description: 'Notog‘ri fayl turi (.jpg, .jpeg, .png)' })
@@ -72,7 +73,7 @@ export class MoviesController {
 
   @Auth(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Yangi kinoni id bilan  qoshish ' })
+  @ApiOperation({ summary: 'Yangi kinoni id bilan  qoshish FAQAT ADMIN UCHUN)' })
   @ApiConsumes('multipart/form-data')
   @ApiResponse({ status: 201, description: 'Kino muvaffaqiyatli qoshildi' })
   @ApiResponse({ status: 415, description: 'Notogri fayl turi ' })
@@ -104,12 +105,44 @@ export class MoviesController {
 
   @Auth(UserRole.ADMIN, UserRole.USER)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Slug orqali kinoni olish' })
+  @ApiOperation({ summary: 'Slug orqali kinoni olish (FAQAT ADMIN VA USER UCHUN)' })
   @ApiResponse({ status: 200, description: 'Kino topildi' })
   @ApiResponse({ status: 404, description: 'Kino topilmadi' })
   @ApiParam({ name: 'slug', required: true, description: 'Filmning slug qiymati' })
   @Get('/:slug')
   GetSlug(@Param('slug') slug: string) {
     return this.movieService.get_by_slug(slug);
+  }
+
+  @Auth(UserRole.ADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Id orqali put qilish (FAQAT ADMIN' })
+  @ApiResponse({ status: 200, description: 'UPDATED' })
+  @ApiResponse({ status: 404, description: 'ERROR' })
+  @Put('/id/change')
+  @ApiParam({ name: 'id', required: true, description: 'id qiymat' })
+  Updated_Movie(@Param('id') id: string, payload: Updated_MovieDto) {
+    return this.movieService.put_movie(id, payload)
+  }
+
+  @Auth(UserRole.ADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Id orqali kinoni ochirish (FAQAT ADMIN UCHUN)' })
+  @ApiResponse({ status: 200, description: 'Kino topildi' })
+  @ApiResponse({ status: 404, description: 'Kino topilmadi' })
+  @ApiParam({ name: 'id', required: true, description: 'id qiymat' })
+  @Delete('/:id')
+  Delete(@Param('id') id: string) {
+    return this.movieService.delete_movie(id)
+  }
+
+  @Auth(UserRole.ADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Hamma Movie larni olsih (FAQAT ADMIN UCHUN)' })
+  @ApiResponse({ status: 200, description: 'Kino topildi' })
+  @ApiResponse({ status: 404, description: 'Kino topilmadi' })
+  @Get('all')
+  GetAll() {
+    return this.movieService.Get_All()
   }
 }

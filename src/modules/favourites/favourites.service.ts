@@ -48,5 +48,14 @@ export class FavouritesService {
         if (!deleted) throw new NotFoundException(`this ${movie_id} is not found`)
         return deleted
     }
+    async Get_One_favourite(id: string) {
+        let exists = await this.favouriteModel.findOne({
+            where: {
+                Id: id
+            }
+        })
+        if (!exists) throw new NotFoundException(`this ${id} is not found`)
+        return exists
+    }
 }
 

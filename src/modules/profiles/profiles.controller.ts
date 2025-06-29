@@ -14,7 +14,7 @@ export class ProfilesController {
 
      @Auth(UserRole.USER, UserRole.ADMIN)
      @ApiBearerAuth()
-     @ApiOperation({ summary: "Foydalanuvchini Hamma Profillarini olish" })
+     @ApiOperation({ summary: "Foydalanuvchini Hamma Profillarini olish (FAQAT ADMIN VA USER UCHUN)" })
      @ApiResponse({ status: 200, description: 'Success' })
      @ApiResponse({ status: 404, description: 'UnSuccess' })
      @Get('profiles')
@@ -24,7 +24,7 @@ export class ProfilesController {
 
      @Auth(UserRole.USER, UserRole.ADMIN)
      @ApiBearerAuth()
-     @ApiOperation({ summary: "Bir dona Profilni olish Param orqali" })
+     @ApiOperation({ summary: "Bir dona Profilni olish Param orqali (FAQAT ADMIN VA USER UCHUN)" })
      @ApiResponse({ status: 200, description: 'Success' })
      @ApiResponse({ status: 404, description: 'UnSuccess' })
      @Get('one_profile/:id')
@@ -34,7 +34,7 @@ export class ProfilesController {
 
      @Auth(UserRole.USER, UserRole.ADMIN)
      @ApiBearerAuth()
-     @ApiOperation({ summary: "Bir dona Profilni Shahar Boyicha olish Query orqali" })
+     @ApiOperation({ summary: "Bir dona Profilni Shahar Boyicha olish Query orqali (FAQAT ADMIN VA USER UCHUN)" })
      @ApiResponse({ status: 200, description: 'Success' })
      @ApiResponse({ status: 404, description: 'UnSuccess' })
      @Get('query__by_country_profile')
@@ -44,7 +44,7 @@ export class ProfilesController {
 
      @Auth(UserRole.USER, UserRole.ADMIN)
      @ApiBearerAuth()
-     @ApiOperation({ summary: "Bir dona Profilni  Ismi boyicha olish Query orqali" })
+     @ApiOperation({ summary: "Bir dona Profilni  Ismi boyicha olish Query orqali (FAQAT ADMIN VA USER UCHUN)" })
      @ApiResponse({ status: 200, description: 'Success' })
      @ApiResponse({ status: 404, description: 'UnSuccess' })
      @Get('query_profile_by_name')
@@ -54,7 +54,7 @@ export class ProfilesController {
 
      @Auth(UserRole.USER, UserRole.ADMIN)
      @ApiBearerAuth()
-     @ApiOperation({ summary: "Bir dona Profilni  Telefon raqami  boyicha olish Query orqali" })
+     @ApiOperation({ summary: "Bir dona Profilni  Telefon raqami  boyicha olish Query orqali (FAQAT ADMIN VA USER UCHUN)"  })
      @ApiResponse({ status: 200, description: 'Success' })
      @ApiResponse({ status: 404, description: 'UnSuccess' })
      @Get('query_profile_by_phone')
@@ -64,7 +64,7 @@ export class ProfilesController {
 
      @Auth(UserRole.USER, UserRole.ADMIN)
      @ApiBearerAuth()
-     @ApiOperation({ summary: "Bir dona Profilni Updated qilish From Datdan "})
+     @ApiOperation({ summary: "Bir dona Profilni Updated qilish From Datdan (FAQAT ADMIN VA USER UCHUN)"})
      @ApiConsumes('multipart/form-data')
      @ApiResponse({ status: 200, description: 'Success' })
      @ApiResponse({ status: 404, description: 'UnSuccess' })

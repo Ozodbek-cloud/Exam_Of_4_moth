@@ -3,9 +3,8 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './Auth_Dto/register.dto';
 import { VerificationDto } from './Auth_Dto/verify.dto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { sendVerifyDto } from './Auth_Dto/sendVeryDto';
-import { resetPasswordDto } from './Auth_Dto/resetPassword.dto';
-import { refreshTokenDto } from './Auth_Dto/refreshToken.dto';
+import { SendVerifyDto } from './Auth_Dto/sendVeryDto';
+import { ResetPasswordDto } from './Auth_Dto/resetPassword.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -31,7 +30,7 @@ export class AuthController {
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
     @Post('send-verify')
-    SendVerify(payload: sendVerifyDto){
+    SendVerify(@Body() payload: SendVerifyDto){
         return this.authService.sendVerify(payload)
     }
 
@@ -39,16 +38,10 @@ export class AuthController {
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
     @Post('reset-password')
-    ResetPassword(payload: resetPasswordDto) {
+    ResetPassword(@Body() payload: ResetPasswordDto) {
         return this.authService.reset_password(payload)
     }
 
-    @ApiOperation({ summary: "Refresh token uchun"})
-    @ApiResponse({ status: 200, description: 'Success' })
-    @ApiResponse({ status: 404, description: 'UnSuccess' })
-    @Post('refresh-token')
-    RefreshToken(payload: refreshTokenDto) {
-        return this.authService.refresh_token(payload)
-    }
+    
     
 }
