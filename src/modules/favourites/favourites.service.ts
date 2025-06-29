@@ -10,7 +10,8 @@ export class FavouritesService {
 
     async get_favourites() {
         let all = await this.favouriteModel.findAll({ include: [{ model: UserModel }, { model: Movies_Model }] })
-        return { success: true, data: all }
+        let total = await this.favouriteModel.count()
+        return { success: true, data: all, total: total}
     }
 
     async post_favourites(payload: Partial<favouriteDto>) {

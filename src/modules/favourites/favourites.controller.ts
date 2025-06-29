@@ -8,7 +8,7 @@ import { UserRole } from 'src/core/types/user.types';
 @Controller('favourites')
 export class FavouritesController {
     constructor(private readonly favouriteService: FavouritesService) { }
-    @Auth(UserRole.USER)
+    @Auth(UserRole.USER,UserRole.ADMIN)
     @ApiBearerAuth()
     @ApiOperation({ summary: "Bu Movieni Favourites Bolimiga qoshish"})
     @ApiResponse({ status: 201, description: 'Success' })

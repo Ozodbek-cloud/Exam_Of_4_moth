@@ -1,10 +1,8 @@
 import { DataTypes } from "sequelize";
 import { Column, Table, Model, ForeignKey, HasMany } from "sequelize-typescript";
-import { v4 as uuidv4} from "uuid"
 import { Movies_Model } from "./movies.entites";
-import { Lang, VideoQuality } from "../types/user.types";
+import { Lang} from "../types/user.types";
 import { BelongsTo } from "sequelize-typescript";
-import { Favorite_Model } from "./favourite.entities";
 
 @Table({ tableName: "Movies_Files" })
 export class Movies_Files_Model extends Model {
@@ -25,16 +23,15 @@ export class Movies_Files_Model extends Model {
   @Column
   file_url: string;
 
-  @Column({
-    type: DataTypes.ENUM(...Object.values(VideoQuality))
-  })
-  quality: VideoQuality;
+  @Column
+  quality: '280p' | '480p' | '1080p' | '4k';
 
   @Column({
     type: DataTypes.ENUM(...Object.values(Lang)),
     defaultValue: Lang.UZB
   })
-  laguage: Lang;
+  language: Lang;
 
-  
+  @Column
+  size : string
 }

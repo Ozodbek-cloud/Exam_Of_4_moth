@@ -2,21 +2,11 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsString } from "class-validator";
 
 export class ProfileDto{
-    @ApiProperty()
-    @IsString()
-    @IsNotEmpty()
-    user_id: string
-
-    @ApiProperty()
-    @IsString()
-    @IsNotEmpty()
-    fullname: string
-
 
     @ApiProperty({
         format: "binary"
     })
-    avatar: string
+    avatar?: string
 
     @ApiProperty()
     @IsString()

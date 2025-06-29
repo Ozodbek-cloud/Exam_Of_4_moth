@@ -7,6 +7,8 @@ import { Movies_Files_Model } from 'src/core/entities/movies.files';
 import { Favorite_Model } from 'src/core/entities/favourite.entities';
 import { Review_Model } from 'src/core/entities/reviews.entities';
 import { Movie_Files_Dto } from '../movies-files/MovieDto/movie.dto';
+import { Categories_Model } from 'src/core/entities/categories.entities';
+import { Movies_Categories_Model } from 'src/core/entities/movie.cat';
 
 @Injectable()
 export class MoviesService {
@@ -63,7 +65,7 @@ export class MoviesService {
         if(!movie){
                throw new NotFoundException("Movie spesific id not found") 
         }
-        let newMovieFile = await this.moviesFileModel.create({...payload,Id: id, file_url: filename.path})
+        let newMovieFile = await this.moviesFileModel.create({...payload,movie_id: id, file_url: filename.path})
         return {
             success: true,
             message: "new MovieFile created",
@@ -75,7 +77,10 @@ export class MoviesService {
         let get_Slug = await this.moviesModel.findAll({
             where: {
                 slug: slug
-            }, include: [{ model: Movies_Files_Model }, { model: Favorite_Model }, { model: Review_Model }]
+            }, include: [{ model: Movies_Files_Model, attributes: ['quality', 'language'] },
+              { model: Favorite_Model, attributes: ['movie_id']},
+              { model: Review_Model, attributes: ['rating', 'comment'] },
+            {model: Movies_Categories_Model, attributes: ['name']}]
         })
         if (!get_Slug) throw new BadRequestException(`this ${slug} is not found`)
 

@@ -30,7 +30,11 @@ export class SubscriptionPlanService {
 
         }
     }
-
-    
+    async get_all_subs() {
+        let all = await this.subscriptionModel.findAll({
+            include: [{model: User_Subscriptions_Model}]
+        })
+        return all
+    }
     
 }

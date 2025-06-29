@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/sequelize';
 import { MailService } from 'src/common/mail/mail.service';
@@ -8,6 +8,8 @@ import { UserModel } from 'src/core/entities/user.entities';
 import * as bcrypt from "bcrypt"
 import { RegisterDto } from './Auth_Dto/register.dto';
 import { VerificationDto } from './Auth_Dto/verify.dto';
+import { sendVerifyDto } from './Auth_Dto/sendVeryDto';
+import { resetPasswordDto } from './Auth_Dto/resetPassword.dto';
 interface JwtPayload{
         id: number,
         role: string
@@ -63,6 +65,49 @@ export class AuthService {
 
         let token = await this.generateToken({id: user.dataValues.Id, role: user.dataValues.role})
         return {message: "SuccessFully Logined", token, user}
+    }
+
+    async sendVerify(payload: sendVerifyDto) {
+      let code = Math.floor(Math.random() * 10000)
+
+      await this.mailerService.sendMail(payload.email, 'Veritification code', code)
+
+      await this.redisService.set(`pass:${payload.email}`,JSON.stringify({...payload, code}), 600)
+
+      return {
+        message: `Verification code send to ${payload.email}`
+      }
+    }
+
+    async reset_password(payload: resetPasswordDto) {
+      let stored = await this.redisService.get(`pass:${payload.email}`)
+      if (!stored) throw new BadRequestException("Otp expire or not found")
+      
+      let userData = JSON.parse(stored)
+
+      if(userData.code != payload.code) throw new BadRequestException("Otp invalid")
+      
+     await this.redisService.del(`pass:${payload.email}`)
+
+     let hash = await bcrypt.hash(payload.password, 10)
+
+     await this.userModel.update({password: hash}, {
+      where: {email: payload.email}
+    })
+
+    return {
+      message: "Password Updated SuccessFully"
+    }
+    }
+
+    async refresh_token({token}: {token: string}) {
+      try{
+        let payload = await this.jwtService.verifyAsync(token)
+        if (!payload) throw new UnauthorizedException()
+          return this.generateToken({ id: payload.id, role: payload.role}, true)
+      } catch(error) {
+        throw new UnauthorizedException("Invalid or expired refresh token")
+      }
     }
     
 

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
 import { Categories_Model } from 'src/core/entities/categories.entities';
 import { Favorite_Model } from 'src/core/entities/favourite.entities';
 import { Movies_Categories_Model } from 'src/core/entities/movie.cat';
@@ -15,7 +16,7 @@ import { Watch_History_Model } from 'src/core/entities/watch_history.entities';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal: true}),
+    ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -26,11 +27,28 @@ import { Watch_History_Model } from 'src/core/entities/watch_history.entities';
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASS'),
         database: configService.get('DB_NAME'),
-        models: [Categories_Model, Favorite_Model, Movies_Categories_Model, Movies_Files_Model, Movies_Model, Payments_Model
-          , Review_Model, Subscriptions_Plans_Model, User_Subscriptions_Model, UserModel, Watch_History_Model
+        models: [
+          Categories_Model,
+          Favorite_Model,
+          Movies_Categories_Model,
+          Movies_Files_Model,
+          Movies_Model,
+          Payments_Model,
+          Review_Model,
+          Subscriptions_Plans_Model,
+          User_Subscriptions_Model,
+          UserModel,
+          Watch_History_Model,
         ],
         autoLoadModels: true,
         synchronize: true,
+        dialectOptions: {
+          ssl: {
+            require: true,
+            rejectUnauthorized: false,
+          },
+        },
+        ssl: true,
       }),
     }),
   ],

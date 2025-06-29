@@ -10,7 +10,7 @@ export class Movie_Files_Dto {
 
     @ApiProperty()
     @IsNotEmpty()
-    quality: ['240p',| '360p', | '480p', |'720p', |'1080p', |'4K',]
+    quality: ["Q240" | 'Q360' | 'Q480', | 'Q720', | 'Q1080', | 'Q4K']
 
     @ApiProperty()
     @IsNotEmpty()

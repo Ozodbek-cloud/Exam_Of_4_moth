@@ -8,6 +8,7 @@ import { Movies_Files_Model } from "./movies.files";
 import { Watch_History_Model } from "./watch_history.entities";
 import { Favorite_Model } from "./favourite.entities";
 import { Review_Model } from "./reviews.entities";
+import { Categories_Model } from "./categories.entities";
 
 @Table({tableName: "Movies"})
 export class Movies_Model extends Model{
@@ -63,8 +64,8 @@ export class Movies_Model extends Model{
     @BelongsTo(() => UserModel)
     user: UserModel
 
-    @HasMany(() => Movies_Categories_Model)
-    movies_category: Movies_Categories_Model[]
+    @HasMany(() => Categories_Model)
+    movies_category: Categories_Model[]
 
     @HasMany(() => Movies_Files_Model)
     movies_files: Movies_Files_Model[]

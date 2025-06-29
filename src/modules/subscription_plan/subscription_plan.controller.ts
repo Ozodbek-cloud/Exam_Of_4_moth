@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { SubscriptionDto } from './SubDto/sub.dto';
 import { SubscriptionPlanService } from './subscription_plan.service';
@@ -19,16 +19,16 @@ export class SubscriptionPlanController {
     }
 
     @Auth(UserRole.USER)
-    @Post()
+    @Post('purchase')
     createUserSubs( @Req() req :Request, @Body() payload: Required<UserSubs>) {
      return  this.subsService.createUserSubs(req['user'].id, payload)
 
     }
-    // @ApiOperation({ summary: "Subscriptionni Create qilish"})
-    // @ApiResponse({ status: 200, description: 'Success' })
-    // @ApiResponse({ status: 404, description: 'UnSuccess' })
-    // @Post('create')
-    // GetSubs() {
-    //     return this.subsService.get_all_subs
-    // }
+    @ApiOperation({ summary: "Subscriptionni Hammasini Get Qilish "})
+    @ApiResponse({ status: 200, description: 'Success' })
+    @ApiResponse({ status: 404, description: 'UnSuccess' })
+    @Get('all/subs')
+    GetSubs() {
+        return this.subsService.get_all_subs()
+    }
 }
