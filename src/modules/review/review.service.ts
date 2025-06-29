@@ -7,15 +7,37 @@ import { Movies_Model } from 'src/core/entities/movies.entites';
 
 @Injectable()
 export class ReviewService {
-    constructor(@InjectModel(Review_Model) private reviewModel: typeof Review_Model) {}
+    constructor(@InjectModel(Review_Model) private reviewModel: typeof Review_Model) { }
 
-    async add_review(payload: Required<ReviewDto>) {
-        let create = await this.reviewModel.create(payload)
-        return create
+    async add_review(payload: Required<ReviewDto>, user: any, movie_id: string) {
+        const created = await this.reviewModel.create({
+            ...payload,
+            movie_id,
+            user_id: user.id
+        });
+
+        const response = {
+            success: true,
+            message: "Sharh muvaffaqiyatli qo'shildi",
+            data: {
+                id: created.id,
+                user: {
+                    id: user.id,
+                    username: user.username
+                },
+                movie_id: created.movie_id,
+                rating: created.rating,
+                comment: created.comment,
+                created_at: created.createdAt
+            }
+        };
+
+        return response;
     }
 
+
     async get_reviews() {
-        let all = await this.reviewModel.findAll({include: [{model: UserModel}, {model: Movies_Model}]})
+        let all = await this.reviewModel.findAll({ include: [{ model: UserModel }, { model: Movies_Model }] })
         return all
     }
 
@@ -27,6 +49,6 @@ export class ReviewService {
         })
         if (!find_review) throw new NotFoundException(`this ${id} is not found`)
 
-        return {success: true, data: find_review}
+        return { success: true, data: find_review }
     }
 }

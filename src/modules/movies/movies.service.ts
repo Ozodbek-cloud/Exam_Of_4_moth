@@ -85,7 +85,8 @@ export class MoviesService {
         if (!movie) {
             throw new NotFoundException("Movie spesific id not found")
         }
-        let newMovieFile = await this.moviesFileModel.create({ ...payload, movie_id: id, file_url: filename.path })
+        const size_mb = parseFloat((filename.size / (1024 * 1024)).toFixed(2));
+        let newMovieFile = await this.moviesFileModel.create({ ...payload, movie_id: id, file_url: filename.path, size: size_mb })
         return {
             success: true,
             message: "new MovieFile created",
@@ -104,7 +105,7 @@ export class MoviesService {
         })
         if (!get_Slug) throw new BadRequestException(`this ${slug} is not found`)
 
-        return get_Slug
+        return {success: true, dataa: get_Slug}
     }
     async delete_movie(id: string) {
        let fin_delete = await this.moviesModel.destroy({
