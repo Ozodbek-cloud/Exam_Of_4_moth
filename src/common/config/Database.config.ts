@@ -20,13 +20,13 @@ import { Watch_History_Model } from 'src/core/entities/watch_history.entities';
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: (config: ConfigService) => ({
         dialect: 'postgres',
-        host: configService.get('DB_HOST'),
-        port: +configService.get('DB_PORT'),
-        username: configService.get('DB_USER'),
-        password: configService.get('DB_PASS'),
-        database: configService.get('DB_NAME'),
+        host: config.get('DB_HOST'),
+        port: +config.get('DB_PORT'),
+        username: config.get('DB_USER'),
+        password: config.get('DB_PASS'),
+        database: config.get('DB_NAME'),
         models: [
           Categories_Model,
           Favorite_Model,
@@ -48,7 +48,6 @@ import { Watch_History_Model } from 'src/core/entities/watch_history.entities';
             rejectUnauthorized: false,
           },
         },
-        ssl: true,
       }),
     }),
   ],

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { FavouritesService } from './favourites.service';
 import { favouriteDto } from './FavouriteDto/favourite.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -19,7 +19,7 @@ export class FavouritesController {
     }
 
     @ApiBearerAuth()
-    @Auth(UserRole.USER)
+    @Auth(UserRole.USER, UserRole.ADMIN)
     @ApiOperation({ summary: "Bu Favourite Hammasini olish"})
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
@@ -29,11 +29,11 @@ export class FavouritesController {
     }
 
     @ApiBearerAuth()
-    @Auth(UserRole.USER)
+    @Auth(UserRole.USER, UserRole.ADMIN)
     @ApiOperation({ summary: "Bu Favourite Hammasini olish"})
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
-    @Get('delete/:movie_id')
+    @Delete('delete/:movie_id')
     Delete(@Param('movie_id') movie_id: string) {
         return this.favouriteService.delete_favourite(movie_id)
     }

@@ -14,6 +14,7 @@ export class SubscriptionPlanService {
 
         return { success: true, data: newSubs}
     }
+    
     async createUserSubs( user_id : string, payload: Required<UserSubs>) {
         let plan = await this.subscriptionModel.findOne({
             where: {Id: payload.plan_id}

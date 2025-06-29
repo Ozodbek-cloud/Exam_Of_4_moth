@@ -6,7 +6,7 @@ export class ProfileDto{
     @ApiProperty({
         format: "binary"
     })
-    avatar?: string
+    updated_avatar?: string
 
     @ApiProperty()
     @IsString()

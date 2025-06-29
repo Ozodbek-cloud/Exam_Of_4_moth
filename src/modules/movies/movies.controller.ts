@@ -9,6 +9,8 @@ import { ApiConsumes, ApiOperation, ApiResponse, ApiTags, ApiQuery, ApiParam, Ap
 import { Auth } from 'src/core/decorator/user.decorator';
 import { UserRole } from 'src/core/types/user.types';
 import { Movie_Files_Dto } from '../movies-files/MovieDto/movie.dto';
+import { TSVECTOR } from 'sequelize';
+import { MovieQuery } from './MovieDto/movie.query.dto';
 
 @ApiTags('Movies')
 @Controller('movies')
@@ -26,21 +28,10 @@ export class MoviesController {
   @ApiQuery({ name: 'category', required: false, type: String, description: 'Kategoriya bo‘yicha filter' })
   @ApiQuery({ name: 'search', required: false, type: String, description: 'Nomi bo‘yicha qidiruv' })
   @ApiQuery({ name: 'subscription_type', required: false, type: String, description: 'Obuna turi (free/premium)' })
-
   @Get('search')
-  getMovies(
-    @Query('page') page: string,
-    @Query('limit') limit: string,
-    @Query('category') category: string,
-    @Query('search') search: string,
-    @Query('subscription_type') subscriptionType: string,
-  ) {
-    const pageNumber = parseInt(page) || 1;
-    const limitNumber = parseInt(limit) || 20;
-
-    return this.movieService.get_movies(pageNumber, limitNumber, category, search, subscriptionType);
+  getByQuery(@Query() query: MovieQuery) {
+    return this.movieService.getAll(query);
   }
-
 
   @Auth(UserRole.ADMIN)
   @ApiBearerAuth()

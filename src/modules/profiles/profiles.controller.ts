@@ -52,7 +52,7 @@ export class ProfilesController {
           return this.profileService.get_query_by_name_profile(name)
      }
 
-     @Auth(UserRole.USER)
+     @Auth(UserRole.USER, UserRole.ADMIN)
      @ApiBearerAuth()
      @ApiOperation({ summary: "Bir dona Profilni  Telefon raqami  boyicha olish Query orqali" })
      @ApiResponse({ status: 200, description: 'Success' })
@@ -62,7 +62,7 @@ export class ProfilesController {
           return this.profileService.get_query_by_phone_profile(phone)
      }
 
-     @Auth(UserRole.USER)
+     @Auth(UserRole.USER, UserRole.ADMIN)
      @ApiBearerAuth()
      @ApiOperation({ summary: "Bir dona Profilni Updated qilish From Datdan "})
      @ApiConsumes('multipart/form-data')
