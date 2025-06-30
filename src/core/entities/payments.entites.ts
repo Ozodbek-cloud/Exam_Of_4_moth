@@ -29,7 +29,7 @@ export class Payments_Model extends Model {
         type: DataTypes.ENUM(...Object.values(Payment_Method))
     })
     payment_method: Payment_Method;
-
+     
     @Column({
         type: DataTypes.JSON,
     })

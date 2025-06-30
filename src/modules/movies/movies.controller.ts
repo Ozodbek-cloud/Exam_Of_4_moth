@@ -116,13 +116,35 @@ export class MoviesController {
 
   @Auth(UserRole.ADMIN)
   @ApiBearerAuth()
+  @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Id orqali put qilish (FAQAT ADMIN' })
   @ApiResponse({ status: 200, description: 'UPDATED' })
-  @ApiResponse({ status: 404, description: 'ERROR' })
-  @Put('/id/change')
   @ApiParam({ name: 'id', required: true, description: 'id qiymat' })
-  Updated_Movie(@Param('id') id: string, payload: Updated_MovieDto) {
-    return this.movieService.put_movie(id, payload)
+  @ApiResponse({ status: 404, description: 'ERROR' })
+  @Put('/:id/change')
+  @UseInterceptors(
+    FileInterceptor('poster', {
+      storage: diskStorage({
+        destination: './uploads/posters',
+        filename: (req, file, cb) => {
+          let posterName = uuidv4() + '_' + extname(file.originalname);
+          cb(null, posterName);
+        },
+      }),
+      fileFilter: (req, file, callback) => {
+        let allowed: string[] = ['image/jpeg', 'image/jpg', 'image/png'];
+        if (!allowed.includes(file.mimetype)) {
+          return callback(
+            new UnsupportedMediaTypeException('File type must be .jpg | .jpeg | .png'),
+            false,
+          );
+        }
+        callback(null, true);
+      },
+    }),
+  )
+  Updated_Movie(@Param('id') id: string, @Body() payload: Updated_MovieDto, @UploadedFile() poster: Express.Multer.File) {
+    return this.movieService.put_movie(id, payload, poster)
   }
 
   @Auth(UserRole.ADMIN)
@@ -136,13 +158,5 @@ export class MoviesController {
     return this.movieService.delete_movie(id)
   }
 
-  @Auth(UserRole.ADMIN)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Hamma Movie larni olsih (FAQAT ADMIN UCHUN)' })
-  @ApiResponse({ status: 200, description: 'Kino topildi' })
-  @ApiResponse({ status: 404, description: 'Kino topilmadi' })
-  @Get('all')
-  GetAll() {
-    return this.movieService.Get_All()
-  }
+  
 }

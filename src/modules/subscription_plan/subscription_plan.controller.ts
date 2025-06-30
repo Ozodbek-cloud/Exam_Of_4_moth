@@ -5,6 +5,7 @@ import { SubscriptionPlanService } from './subscription_plan.service';
 import { Auth } from 'src/core/decorator/user.decorator';
 import { UserRole } from 'src/core/types/user.types';
 import { UserSubs } from './SubDto/userSubs_plan.dto';
+import { PaymentDto } from '../payments/Dto/payment_dto';
 
 @Controller('subscription-plan')
 export class SubscriptionPlanController {
@@ -31,4 +32,14 @@ export class SubscriptionPlanController {
     GetSubs() {
         return this.subsService.get_all_subs()
     }
+
+    @ApiOperation({ summary: "paymentni sotib olish "})
+    @ApiResponse({ status: 200, description: 'Success' })
+    @ApiResponse({ status: 404, description: 'UnSuccess' })
+    @Get('payment/purchase')
+    Payment(@Body() payload: PaymentDto) {
+        return this.subsService.create_payment(payload)
+    }
+
+    
 }

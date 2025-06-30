@@ -9,11 +9,11 @@ import { Movies_Model } from 'src/core/entities/movies.entites';
 export class ReviewService {
     constructor(@InjectModel(Review_Model) private reviewModel: typeof Review_Model) { }
 
-    async add_review(payload: Required<ReviewDto>, user: any, movie_id: string) {
+    async add_review(payload: Required<ReviewDto>, user: string, movie_id: string) {
         const created = await this.reviewModel.create({
             ...payload,
             movie_id,
-            user_id: user.id
+            user_id: user
         });
 
         const response = {
@@ -22,8 +22,8 @@ export class ReviewService {
             data: {
                 id: created.id,
                 user: {
-                    id: user.id,
-                    username: user.username
+                    Id: user,
+                    // username: user.username
                 },
                 movie_id: created.movie_id,
                 rating: created.rating,

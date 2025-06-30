@@ -8,12 +8,12 @@ export class ProfileDto{
     })
     updated_avatar?: string
 
-    @ApiProperty()
+    @ApiProperty({ example: "9989158478"})
     @IsString()
     @IsNotEmpty()
     phone: string
 
-    @ApiProperty()
+    @ApiProperty({example: "U.S.A"})
     @IsString()
     @IsNotEmpty()
     country: string

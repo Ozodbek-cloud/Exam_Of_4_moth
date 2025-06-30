@@ -1,44 +1,64 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Categories_Model } from 'src/core/entities/categories.entities';
 import { CategoryDto } from './CategoryDto/category.dto';
-import { Movies_Categories_Model } from 'src/core/entities/movie.cat';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class CategoriesService {
-    constructor(@InjectModel(Categories_Model) private categoryModel: typeof Categories_Model){}
+  constructor(
+    @InjectModel(Categories_Model)
+    private categoryModel: typeof Categories_Model,
+  ) {}
 
-    async create_category(payload: Required<CategoryDto>) {
-        let newCat = await this.categoryModel.create(payload)
-        return newCat
+  async create_category(payload: Required<CategoryDto>) {
+    try {
+      const newCat = await this.categoryModel.create(payload);
+      return newCat;
+    } catch (error) {
+      console.error('Kategoriya yaratishda xatolik:', error);
+      throw new InternalServerErrorException(error.message);
     }
+  }
 
-    async get_all() {
-        let all = await this.categoryModel.findAll()
-        return all
+  async get_all() {
+    try {
+      const all = await this.categoryModel.findAll();
+      return all;
+    } catch (error) {
+      console.error('Kategoriyalarni olishda xatolik:', error);
+      throw new InternalServerErrorException(error.message);
     }
+  }
 
-    async put_category(id: string, payload: Required<CategoryDto>) {
-        let exists = await this.categoryModel.findOne({
-            where : {
-                Id: id
-            }
-        })
-        if (!exists) throw new NotFoundException(`this ${id } not found`)
+  async put_category(id: string, payload: Required<CategoryDto>) {
+    try {
+      const exists = await this.categoryModel.findOne({ where: { Id: id } });
+      if (!exists) {
+        throw new NotFoundException(`Kategoriya ID ${id} topilmadi`);
+      }
 
-        let Updated_Cat = await exists.update(payload)
-
-        return Updated_Cat
+      const updatedCat = await exists.update(payload);
+      return updatedCat;
+    } catch (error) {
+      console.error('Kategoriyani yangilashda xatolik:', error);
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException(error.message);
     }
+  }
 
-    async delete_category(id: string) {
-       
-        let deleted = await this.categoryModel.destroy({
-            where: {Id: id}
-        })
-        if (!deleted) throw new NotFoundException(`this ${id } not found`)
-        
-        return {success: true, data: deleted}
+  async delete_category(id: string) {
+    try {
+      const deleted = await this.categoryModel.destroy({ where: { Id: id } });
+
+      if (!deleted) {
+        throw new NotFoundException(`Kategoriya ID ${id} topilmadi`);
+      }
+
+      return { success: true, data: deleted };
+    } catch (error) {
+      console.error('Kategoriyani o‘chirishda xatolik:', error);
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException(error.message);
     }
+  }
 }

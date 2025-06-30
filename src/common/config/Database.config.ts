@@ -42,6 +42,7 @@ import { Watch_History_Model } from 'src/core/entities/watch_history.entities';
         ],
         autoLoadModels: true,
         synchronize: true,
+        logging: false,
         dialectOptions: {
           ssl: {
             require: true,

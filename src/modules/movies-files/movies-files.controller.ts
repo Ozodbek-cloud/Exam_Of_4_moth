@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UnsupportedMediaTypeException, UploadedFile, UseInterceptors,
+import { Body, Controller, Get, Post, UnsupportedMediaTypeException, UploadedFile, UseInterceptors,
 } from '@nestjs/common';
 import { MoviesFilesService } from './movies-files.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -18,8 +18,10 @@ export class MoviesFilesController {
     @Auth(UserRole.ADMIN)
     @ApiOperation({ summary: 'Get Qilish' })
     @ApiBearerAuth()
-    @ApiConsumes('multipart/form-data')
     @ApiResponse({ status: 20, description: 'Get' })
     @ApiResponse({ status: 415, description: 'Get'})
-    get() {}
+    @Get('all')
+    get() {
+       return this.movieFileServie.get()
+    }
 }

@@ -5,6 +5,7 @@ import { VerificationDto } from './Auth_Dto/verify.dto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { SendVerifyDto } from './Auth_Dto/sendVeryDto';
 import { ResetPasswordDto } from './Auth_Dto/resetPassword.dto';
+import { LoginDto } from './Auth_Dto/loginDto';
 
 @Controller('auth')
 export class AuthController {
@@ -18,12 +19,20 @@ export class AuthController {
         return this.authService.register(payload)
     }
 
+    @ApiOperation({ summary: "Foydalanuvchini Emaildagi code bilan tasdiqlash"})
+    @ApiResponse({ status: 200, description: 'Success' })
+    @ApiResponse({ status: 404, description: 'UnSuccess' })
+    @Post('verify')
+    Verify(@Body() payload: VerificationDto) {
+        return this.authService.verify(payload)
+    }
+     
     @ApiOperation({ summary: "Foydalanuvchini Login qilish va Emaildagi code bilan tasdiqlash"})
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
     @Post('login')
-    Login(@Body() payload: VerificationDto) {
-        return this.authService.verify(payload)
+    Login(@Body() payload: LoginDto) {
+        return this.authService.login(payload)
     }
 
     @ApiOperation({ summary: "Foydalanuvchiga code yuborish reset password uchun"})

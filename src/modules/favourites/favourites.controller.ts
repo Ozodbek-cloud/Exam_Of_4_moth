@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Req } from '@nestjs/common';
 import { FavouritesService } from './favourites.service';
 import { favouriteDto } from './FavouriteDto/favourite.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -14,8 +14,8 @@ export class FavouritesController {
     @ApiResponse({ status: 201, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
     @Post('create')
-    Post_to_Favourites(@Body() payload: favouriteDto) {
-        return this.favouriteService.post_favourites(payload)
+    Post_to_Favourites(@Body() payload: favouriteDto, @Req() req: Request) {
+        return this.favouriteService.post_favourites(req['user'].id, payload)
     }
 
     @ApiBearerAuth()

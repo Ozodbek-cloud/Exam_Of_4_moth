@@ -3,16 +3,21 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Watch_History_Model } from 'src/core/entities/watch_history.entities';
 import { WatchHistoryDto } from './WatchDto/dto';
 import { UpdateWatchHistoryDto } from './WatchDto/updated.dto';
+import { Movies_Model } from 'src/core/entities/movies.entites';
 
 @Injectable()
 export class WatchHistoryService {
   constructor(
     @InjectModel(Watch_History_Model)
-    private watchHistoryModel: typeof Watch_History_Model,
+    private watchHistoryModel: typeof Watch_History_Model, @InjectModel(Movies_Model) private moviesModel : typeof Movies_Model
   ) {}
 
-  async create(payload: Required<WatchHistoryDto>) {
-    const created = await this.watchHistoryModel.create(payload);
+  async create(movie_id: string, payload: Required<WatchHistoryDto>) {
+    let movie = await this.moviesModel.findOne({where: {Id: movie_id}})
+    const watch_percentage = (payload.watched_duration / movie?.dataValues.duration_minutes) * 100;
+
+    const created = await this.watchHistoryModel.create({...payload, watched_percentage: watch_percentage});
+ 
     return { success: true, data: created };
   }
 
@@ -30,11 +35,11 @@ export class WatchHistoryService {
   }
 
   async update(id: string, payload: UpdateWatchHistoryDto) {
-    const [affected, [updated]] = await this.watchHistoryModel.update(payload, {
-      where: { Id: id },
-      returning: true,
-    });
+    let affected = await this.watchHistoryModel.findOne({
+      where: {Id: id}
+    })
     if (!affected) throw new NotFoundException('Yangilash uchun topilmadi');
+    let updated = await affected.update(payload)
     return { success: true, data: updated };
   }
 

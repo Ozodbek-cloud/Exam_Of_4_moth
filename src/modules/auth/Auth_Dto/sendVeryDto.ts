@@ -3,7 +3,7 @@ import { IsEmail, IsString } from "class-validator";
 
 
 export class SendVerifyDto{
-    @ApiProperty()
+    @ApiProperty({ example: "exaple@gmail.com"})
     @IsString()
     @IsEmail()
     email: string

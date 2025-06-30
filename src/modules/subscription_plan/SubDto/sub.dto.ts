@@ -1,26 +1,27 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class SubscriptionDto{
-    @ApiProperty()
-    @IsString()
-    @IsNotEmpty()
-    name: string
+export class SubscriptionDto {
+  @ApiProperty({ example: 'Premium Plan' })
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 
-    @ApiProperty()
-    @IsNumber()
-    @IsNotEmpty()
-    price: number
+  @ApiProperty({ example: 199.00 }) 
+  @IsNumber()
+  @IsNotEmpty()
+  price: number;
 
-    @ApiProperty()
-    @IsNumber()
-    @IsNotEmpty()
-    duration_days: number
+  @ApiProperty({ example: 30 }) 
+  @IsNumber()
+  @IsNotEmpty()
+  duration_days: number;
 
-    @ApiProperty()
-    @IsArray()
-    @IsNotEmpty()
-    feautures: string[]
-
-
+  @ApiProperty({
+    example: ['Unlimited movies', 'HD streaming', 'No ads'],
+    type: [String],
+  })
+  @IsArray()
+  @IsNotEmpty()
+  feautures: string[];
 }

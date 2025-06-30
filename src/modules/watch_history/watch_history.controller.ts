@@ -7,27 +7,27 @@ import { UpdateWatchHistoryDto } from './WatchDto/updated.dto';
 export class WatchHistoryController {
   constructor(private readonly watchHistoryService: WatchHistoryService) {}
 
-  @Post()
-  create(@Body() payload: WatchHistoryDto) {
-    return this.watchHistoryService.create(payload);
+  @Post('create')
+  create(@Param('movie_id') movie_id: string, @Body() payload: WatchHistoryDto) {
+    return this.watchHistoryService.create(movie_id, payload);
   }
 
-  @Get()
+  @Get('all')
   findAll() {
     return this.watchHistoryService.findAll();
   }
 
-  @Get(':id')
+  @Get('/:id')
   findOne(@Param('id') id: string) {
     return this.watchHistoryService.findOne(id);
   }
 
-  @Put(':id')
+  @Put('/:id')
   update(@Param('id') id: string, @Body() payload: UpdateWatchHistoryDto) {
     return this.watchHistoryService.update(id, payload);
   }
 
-  @Delete(':id')
+  @Delete('/:id')
   remove(@Param('id') id: string) {
     return this.watchHistoryService.delete(id);
   }

@@ -4,12 +4,12 @@ import { IsNotEmpty, IsString } from "class-validator";
 
 
 export class MoCatDto{
-    @ApiProperty()
+    @ApiProperty({example: "iebed-sadnosdnao-dds"})
     @IsString()
     @IsNotEmpty()
     movie_id: string
 
-    @ApiProperty()
+    @ApiProperty({example: "ebed-sadnosdna12-dds12"})
     @IsString()
     @IsNotEmpty()
     category_id: string
