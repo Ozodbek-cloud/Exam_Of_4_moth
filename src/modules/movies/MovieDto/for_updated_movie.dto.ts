@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { Subscription_type } from "src/core/types/user.types";
 
 export class Updated_MovieDto {
   @ApiProperty({ example: 'Interstellar', required: false })
@@ -12,12 +13,12 @@ export class Updated_MovieDto {
   @IsOptional()
   description?: string;
 
-  @ApiProperty({ example: 'free', required: false })
-  @IsString()
-  @IsOptional()
-  subscription_type?: 'free' | 'premium';
+  @ApiProperty({ enum: Subscription_type, example: Subscription_type.FREE })
+  @IsEnum(Subscription_type)
+  @IsNotEmpty()
+  subscription_type: Subscription_type;
 
-  @ApiProperty({format: 'binary', required: false})
+  @ApiProperty({ format: 'binary', required: false })
   @IsOptional()
   poster?: string
 }

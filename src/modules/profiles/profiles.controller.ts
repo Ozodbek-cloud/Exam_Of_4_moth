@@ -12,7 +12,7 @@ import { Auth } from 'src/core/decorator/user.decorator';
 export class ProfilesController {
      constructor(private readonly profileService: ProfilesService) { }
 
-     @Auth(UserRole.USER, UserRole.ADMIN)
+     @Auth(UserRole.USER, UserRole.ADMIN, UserRole.SUPERADMIN)
      @ApiBearerAuth()
      @ApiOperation({ summary: "Foydalanuvchini Hamma Profillarini olish (FAQAT ADMIN VA USER UCHUN)" })
      @ApiResponse({ status: 200, description: 'Success' })
@@ -22,7 +22,7 @@ export class ProfilesController {
           return this.profileService.get_all_profile()
      }
 
-     @Auth(UserRole.USER, UserRole.ADMIN)
+     @Auth(UserRole.USER, UserRole.ADMIN, UserRole.SUPERADMIN)
      @ApiBearerAuth()
      @ApiOperation({ summary: "Bir dona Profilni olish Param orqali (FAQAT ADMIN VA USER UCHUN)" })
      @ApiResponse({ status: 200, description: 'Success' })
@@ -32,7 +32,7 @@ export class ProfilesController {
           return this.profileService.get_one_profile(id)
      }
 
-     @Auth(UserRole.USER, UserRole.ADMIN)
+     @Auth(UserRole.USER, UserRole.ADMIN, UserRole.SUPERADMIN)
      @ApiBearerAuth()
      @ApiOperation({ summary: "Bir dona Profilni Shahar Boyicha olish Query orqali (FAQAT ADMIN VA USER UCHUN)" })
      @ApiResponse({ status: 200, description: 'Success' })
@@ -42,7 +42,7 @@ export class ProfilesController {
           return this.profileService.get_query_profile(country)
      }
 
-     @Auth(UserRole.USER, UserRole.ADMIN)
+     @Auth(UserRole.USER, UserRole.ADMIN, UserRole.SUPERADMIN)
      @ApiBearerAuth()
      @ApiOperation({ summary: "Bir dona Profilni  Ismi boyicha olish Query orqali (FAQAT ADMIN VA USER UCHUN)" })
      @ApiResponse({ status: 200, description: 'Success' })
@@ -52,7 +52,7 @@ export class ProfilesController {
           return this.profileService.get_query_by_name_profile(name)
      }
 
-     @Auth(UserRole.USER, UserRole.ADMIN)
+     @Auth(UserRole.USER, UserRole.ADMIN, UserRole.SUPERADMIN)
      @ApiBearerAuth()
      @ApiOperation({ summary: "Bir dona Profilni  Telefon raqami  boyicha olish Query orqali (FAQAT ADMIN VA USER UCHUN)"  })
      @ApiResponse({ status: 200, description: 'Success' })
@@ -62,7 +62,7 @@ export class ProfilesController {
           return this.profileService.get_query_by_phone_profile(phone)
      }
 
-     @Auth(UserRole.USER, UserRole.ADMIN)
+     @Auth(UserRole.USER, UserRole.ADMIN, UserRole.SUPERADMIN)
      @ApiBearerAuth()
      @ApiOperation({ summary: "Bir dona Profilni Updated qilish From Datdan (FAQAT ADMIN VA USER UCHUN)"})
      @ApiConsumes('multipart/form-data')

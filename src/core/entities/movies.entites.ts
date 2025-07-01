@@ -23,7 +23,9 @@ export class Movies_Model extends Model{
     @Column
     title: string
 
-    @Column
+    @Column({
+        unique: true
+    })
     slug: string
 
     @Column({

@@ -8,7 +8,7 @@ import { UserRole } from 'src/core/types/user.types';
 @Controller('favourites')
 export class FavouritesController {
     constructor(private readonly favouriteService: FavouritesService) { }
-    @Auth(UserRole.USER,UserRole.ADMIN)
+    @Auth(UserRole.USER,UserRole.ADMIN, UserRole.SUPERADMIN)
     @ApiBearerAuth()
     @ApiOperation({ summary: "Bu Movieni Favourites Bolimiga qoshish FAQAT (ADMIN VA USER UCHUN)"})
     @ApiResponse({ status: 201, description: 'Success' })
@@ -19,7 +19,7 @@ export class FavouritesController {
     }
 
     @ApiBearerAuth()
-    @Auth(UserRole.USER, UserRole.ADMIN)
+    @Auth(UserRole.USER, UserRole.ADMIN, UserRole.SUPERADMIN)
     @ApiOperation({ summary: "Bu Favourite Hammasini olish (ADMIN VA USER UCHUN)"})
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
@@ -29,7 +29,7 @@ export class FavouritesController {
     }
 
     @ApiBearerAuth()
-    @Auth(UserRole.USER, UserRole.ADMIN)
+    @Auth(UserRole.USER, UserRole.ADMIN, UserRole.SUPERADMIN)
     @ApiOperation({ summary: "Bu Favourite Hammasini olish (ADMIN VA USER UCHUN)"})
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })
@@ -39,7 +39,7 @@ export class FavouritesController {
     }
 
     @ApiBearerAuth()
-    @Auth(UserRole.USER, UserRole.ADMIN)
+    @Auth(UserRole.USER, UserRole.ADMIN, UserRole.SUPERADMIN)
     @ApiOperation({ summary: "Bu Favourite id bilan olish (ADMIN VA USER UCHUN)"})
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 404, description: 'UnSuccess' })

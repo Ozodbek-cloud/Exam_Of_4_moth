@@ -26,7 +26,7 @@ export class PaymentDto {
   @IsNotEmpty()
   payment_details: Record<string, any>;
 
-  @ApiProperty({ enum: Payment_Status })
+  @ApiProperty({ enum: Payment_Status, example: Payment_Status.PENDING})
   @IsEnum(Payment_Status)
   @IsNotEmpty()
   status: Payment_Status;

@@ -72,23 +72,24 @@ export class ProfilesService {
   }
 
   async updated_profile(updated_avatar: Express.Multer.File, id: string, payload: Partial<ProfileDto>) {
-    try {
-      const user = await this.userModel.findOne({ where: { Id: id } });
-      const updated_url = `/uploads/avatars/${updated_avatar.filename}`;
+  try {
+    const user = await this.userModel.findOne({ where: { Id: id } });
+    const updated_url = `/uploads/avatars/${updated_avatar.filename}`;
 
-      if (!user) throw new NotFoundException(`Profile with id ${id} not found`);
+    if (!user) throw new NotFoundException(`Profile with id ${id} not found`);
 
-      if (user.dataValues.avatar_url !== updated_avatar.filename) {
-        const oldPath = path.resolve('uploads/avatars', user.dataValues.avatar_url);
-        deleteMovieFile(oldPath);
-      }
-
-      const updated = await user.update({ ...payload, avatar_url: updated_url });
-      return { success: true, data: updated };
-    } catch (error) {
-      console.error('updated_profile error:', error);
-      if (error instanceof NotFoundException) throw error;
-      throw new InternalServerErrorException(error.message);
+    if (user.dataValues.avatar_url && user.dataValues.avatar_url !== updated_avatar.filename) {
+      const oldPath = path.resolve('uploads/avatars', user.dataValues.avatar_url);
+      deleteMovieFile(oldPath);
     }
+
+    const updated = await user.update({ ...payload, avatar_url: updated_url });
+    return { success: true, data: updated };
+  } catch (error) {
+    console.error('updated_profile error:', error);
+    if (error instanceof NotFoundException) throw error;
+    throw new InternalServerErrorException(error.message);
   }
+}
+
 }

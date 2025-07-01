@@ -15,8 +15,8 @@ import { Auth } from 'src/core/decorator/user.decorator';
 export class MoviesFilesController {
     constructor(private readonly movieFileServie: MoviesFilesService) { }
 
-    @Auth(UserRole.ADMIN)
-    @ApiOperation({ summary: 'Get Qilish' })
+    @Auth(UserRole.ADMIN, UserRole.SUPERADMIN)
+    @ApiOperation({ summary: 'Get Qilish (FAQAT ADMIN VA SUPERADMIN)' })
     @ApiBearerAuth()
     @ApiResponse({ status: 20, description: 'Get' })
     @ApiResponse({ status: 415, description: 'Get'})

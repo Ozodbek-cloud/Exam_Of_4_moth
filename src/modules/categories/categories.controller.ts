@@ -10,7 +10,7 @@ import { UserRole } from 'src/core/types/user.types';
 export class CategoriesController {
     constructor(private readonly catergoryService: CategoriesService) {}
 
-    @Auth(UserRole.ADMIN)
+    @Auth(UserRole.ADMIN, UserRole.SUPERADMIN)
     @ApiBearerAuth()
     @Post('add')
     @ApiOperation({ summary: 'Yangi kategoriya qoshish (Admin UCHUN)' })
@@ -21,7 +21,7 @@ export class CategoriesController {
     }
 
     @ApiBearerAuth()
-    @Auth(UserRole.ADMIN)
+    @Auth(UserRole.ADMIN, UserRole.SUPERADMIN)
     @Get('all')
     @ApiOperation({ summary: 'Barcha kategoriyalar royxatini olish (Admin UCHUN)' })
     @ApiResponse({ status: 200, description: 'Kategoriya royxati qaytarildi' })
@@ -30,7 +30,7 @@ export class CategoriesController {
     }
 
     @ApiBearerAuth()
-    @Auth(UserRole.ADMIN)
+    @Auth(UserRole.ADMIN, UserRole.SUPERADMIN)
     @Put('change/:id')
     @ApiOperation({ summary: 'Kategoriya malumotlarini ozgartirish (Admin UCHUN)' })
     @ApiParam({ name: 'id', description: 'Ozgartirilayotgan kategoriyaning Id raqami' })
@@ -41,7 +41,7 @@ export class CategoriesController {
     }
 
     @ApiBearerAuth()
-    @Auth(UserRole.ADMIN)
+    @Auth(UserRole.ADMIN, UserRole.SUPERADMIN)
     @Delete('delete/:id')
     @ApiOperation({ summary: 'Kategoriya ochirish (Admin UCHUN)' })
     @ApiParam({ name: 'id', description: 'Ochiriladigan kategoriyaning Id raqami' })

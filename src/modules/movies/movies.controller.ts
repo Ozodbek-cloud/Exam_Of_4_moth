@@ -19,7 +19,7 @@ export class MoviesController {
   constructor(private readonly movieService: MoviesService) { }
 
 
-  @Auth(UserRole.ADMIN, UserRole.USER)
+  @Auth(UserRole.ADMIN, UserRole.USER, UserRole.SUPERADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Umumiy qidiruv (search, category, page, subscription) FAQAT ADMIN VA USER UCHUN' })
   @ApiResponse({ status: 200, description: 'Muvaffaqiyatli topildi' })
@@ -34,7 +34,7 @@ export class MoviesController {
     return this.movieService.getAll(query);
   }
 
-  @Auth(UserRole.ADMIN)
+  @Auth(UserRole.ADMIN, UserRole.SUPERADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Yangi kinoni qo‘shish (poster bilan FAQAT ADMIN UCHUN)' })
   @ApiConsumes('multipart/form-data')
@@ -71,7 +71,7 @@ export class MoviesController {
     return this.movieService.createMovie(req['user'].id, payload, poster)
   }
 
-  @Auth(UserRole.ADMIN)
+  @Auth(UserRole.ADMIN, UserRole.SUPERADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Yangi kinoni id bilan  qoshish FAQAT ADMIN UCHUN)' })
   @ApiConsumes('multipart/form-data')
@@ -103,18 +103,18 @@ export class MoviesController {
     return this.movieService.create(id, payload, video)
   }
 
-  @Auth(UserRole.ADMIN, UserRole.USER)
+  @Auth(UserRole.ADMIN, UserRole.USER, UserRole.SUPERADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Slug orqali kinoni olish (FAQAT ADMIN VA USER UCHUN)' })
   @ApiResponse({ status: 200, description: 'Kino topildi' })
   @ApiResponse({ status: 404, description: 'Kino topilmadi' })
   @ApiParam({ name: 'slug', required: true, description: 'Filmning slug qiymati' })
   @Get('/:slug')
-  GetSlug(@Param('slug') slug: string) {
-    return this.movieService.get_by_slug(slug);
+  GetSlug(@Param('slug') slug: string, @Req() req: Request) {
+    return this.movieService.get_by_slug(slug, req['user'].id);
   }
 
-  @Auth(UserRole.ADMIN)
+  @Auth(UserRole.ADMIN, UserRole.SUPERADMIN)
   @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Id orqali put qilish (FAQAT ADMIN' })
@@ -147,7 +147,7 @@ export class MoviesController {
     return this.movieService.put_movie(id, payload, poster)
   }
 
-  @Auth(UserRole.ADMIN)
+  @Auth(UserRole.ADMIN, UserRole.SUPERADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Id orqali kinoni ochirish (FAQAT ADMIN UCHUN)' })
   @ApiResponse({ status: 200, description: 'Kino topildi' })
@@ -158,5 +158,14 @@ export class MoviesController {
     return this.movieService.delete_movie(id)
   }
 
+  @Auth(UserRole.ADMIN, UserRole.SUPERADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Hamma Movielar (FAQAT ADMIN UCHUN)' })
+  @ApiResponse({ status: 200, description: 'Kino topildi' })
+  @ApiResponse({ status: 404, description: 'Kino topilmadi' })
+  @Get('/')
+  Get() {
+    return this.movieService.get_all()
+  }
   
 }

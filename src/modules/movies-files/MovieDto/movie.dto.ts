@@ -1,16 +1,18 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
+import {IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { Lang } from "src/core/types/user.types";
 
 export class Movie_Files_Dto {
 
-    @ApiProperty({format: 'binary'})
+    @ApiProperty({ format: 'binary' })
     video: string
 
-    @ApiProperty()
+    @ApiProperty({example: '4k'})
     @IsNotEmpty()
-    quality: ["Q240" | 'Q360' | 'Q480', | 'Q720', | 'Q1080', | 'Q4K']
+    quality: '4k'| '240p' | '360p' | '480p' | '1080p' 
 
-    @ApiProperty()
+    @ApiProperty({enum: Lang, example: Lang.UZB})
+    @IsEnum(Lang)
     @IsNotEmpty()
-    language: ['uzb' | 'eng' | 'rus']
+    language: Lang
 }

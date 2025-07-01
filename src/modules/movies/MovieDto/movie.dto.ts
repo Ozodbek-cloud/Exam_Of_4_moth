@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { IsEnum, IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { Subscription_type } from "src/core/types/user.types";
 
 export class MovieDto {
   @ApiProperty({ example: 'Inception' })
@@ -32,9 +33,10 @@ export class MovieDto {
   @IsNotEmpty()
   rating: string;
 
-  @ApiProperty({ example: 'premium' })
+  @ApiProperty({ enum: Subscription_type, example: Subscription_type.FREE })
+  @IsEnum(Subscription_type)
   @IsNotEmpty()
-  subscription_type: 'free' | 'premium';
+  subscription_type: Subscription_type;
 
   @ApiProperty({ example: '1500000' })
   @IsNotEmpty()

@@ -11,7 +11,7 @@ export class MoviesCategoryController {
     constructor(private readonly movie_categoryService: MoviesCategoryService) {}
 
     @ApiBearerAuth()
-    @Auth(UserRole.ADMIN)
+    @Auth(UserRole.ADMIN, UserRole.SUPERADMIN)
     @Post('create')
     @ApiOperation({ summary: 'Yangi kino kategoriyasini yaratish (FAQAT ADMIN UCHUN)' })
     @ApiResponse({ status: 201, description: 'Kategoriya muvaffaqiyatli yaratildi' })
@@ -19,7 +19,7 @@ export class MoviesCategoryController {
         return this.movie_categoryService.create_movie_category(payload);
     }
 
-    @Auth(UserRole.ADMIN)
+    @Auth(UserRole.ADMIN, UserRole.SUPERADMIN)
     @ApiBearerAuth()
     @Get('all')
     @ApiOperation({ summary: 'Barcha kino kategoriyalarini olish (FAQAT ADMIN UCHUN)' })
@@ -28,7 +28,7 @@ export class MoviesCategoryController {
         return this.movie_categoryService.Get_All();
     }
 
-    @Auth(UserRole.ADMIN)
+    @Auth(UserRole.ADMIN, UserRole.SUPERADMIN)
     @ApiBearerAuth()
     @Delete('/:id')
     @ApiOperation({ summary: 'Kategoriya Id orqali ochirish (FAQAT ADMIN UCHUN)' })

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Review_Model } from 'src/core/entities/reviews.entities';
 import { ReviewDto } from './ReviewDto/dto';
@@ -7,48 +7,50 @@ import { Movies_Model } from 'src/core/entities/movies.entites';
 
 @Injectable()
 export class ReviewService {
-    constructor(@InjectModel(Review_Model) private reviewModel: typeof Review_Model) { }
+  constructor(
+    @InjectModel(Review_Model) private reviewModel: typeof Review_Model
+  ) {}
 
-    async add_review(payload: Required<ReviewDto>, user: string, movie_id: string) {
-        const created = await this.reviewModel.create({
-            ...payload,
-            movie_id,
-            user_id: user
-        });
-
-        const response = {
-            success: true,
-            message: "Sharh muvaffaqiyatli qo'shildi",
-            data: {
-                id: created.id,
-                user: {
-                    Id: user,
-                    // username: user.username
-                },
-                movie_id: created.movie_id,
-                rating: created.rating,
-                comment: created.comment,
-                created_at: created.createdAt
-            }
-        };
-
-        return response;
+  async add_review(payload: Required<ReviewDto>, user: string, movie_id: string) {
+    try {
+      const newReview = await this.reviewModel.create({
+        ...payload,
+        user_id: user,
+        movie_id,
+      });
+      return { success: true, data: newReview };
+    } catch (error) {
+      throw new InternalServerErrorException('Review qo‘shishda xatolik yuz berdi');
     }
+  }
 
-
-    async get_reviews() {
-        let all = await this.reviewModel.findAll({ include: [{ model: UserModel }, { model: Movies_Model }] })
-        return all
+  async get_reviews() {
+    try {
+      const all = await this.reviewModel.findAll({
+        include: [{ model: UserModel }, { model: Movies_Model }],
+      });
+      return all;
+    } catch (error) {
+      throw new InternalServerErrorException('Reviewlarni olishda xatolik yuz berdi');
     }
+  }
 
-    async delete_review(id: string) {
-        let find_review = await this.reviewModel.destroy({
-            where: {
-                Id: id
-            }
-        })
-        if (!find_review) throw new NotFoundException(`this ${id} is not found`)
+  async delete_review(id: string) {
+    try {
+      const deleted = await this.reviewModel.destroy({
+        where: {
+          Id: id,
+        },
+      });
 
-        return { success: true, data: find_review }
+      if (!deleted) {
+        throw new NotFoundException(`Review ID: ${id} topilmadi`);
+      }
+
+      return { success: true, data: deleted };
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Reviewni o‘chirishda xatolik yuz berdi');
     }
+  }
 }

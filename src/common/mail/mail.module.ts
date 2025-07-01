@@ -9,12 +9,12 @@ import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handleba
       transport:{
         service: "gmail",
         auth: {
-          user:'dilnozmamanova@gmail.com',
-           pass:'yhxfefczbhsmhrjr'
+          user:'vortextblade16@gmail.com',
+           pass:'xnacspfcrkjgifbc'
         }
       },
       defaults:{
-        from: 'The_Lord'
+        from: 'The_Lord_Coder'
       },
       template:{
         dir: join(process.cwd(), 'src', 'templates'),

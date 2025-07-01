@@ -17,7 +17,7 @@ export class FavouritesService {
     private favouriteModel: typeof Favorite_Model,
     @InjectModel(Movies_Model)
     private movieModel: typeof Movies_Model,
-  ) {}
+  ) { }
 
   async get_favourites() {
     try {
@@ -48,6 +48,17 @@ export class FavouritesService {
         throw new BadRequestException(`Berilgan movie_id mavjud emas`);
       }
 
+      const existingFavorite = await this.favouriteModel.findOne({
+        where: { user_id: user_Id, movie_id },
+      });
+
+      if (existingFavorite) {
+        return {
+          success: false,
+          message: "Bu kino allaqachon sevimlilar ro'yxatiga qo‘shilgan",
+        };
+      }
+      
       const favorite = await this.favouriteModel.create({ ...payload, user_id: user_Id });
       if (!favorite) {
         throw new InternalServerErrorException(`Sevimlilarni yaratib bo‘lmadi`);

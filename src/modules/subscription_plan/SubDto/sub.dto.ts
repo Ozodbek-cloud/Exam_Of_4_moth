@@ -18,10 +18,11 @@ export class SubscriptionDto {
   duration_days: number;
 
   @ApiProperty({
-    example: ['Unlimited movies', 'HD streaming', 'No ads'],
-    type: [String],
-  })
-  @IsArray()
-  @IsNotEmpty()
-  feautures: string[];
+  example: ['Unlimited movies', 'HD streaming', 'No ads'],
+  type: [String],
+})
+@IsArray()
+@IsNotEmpty()
+features: string[];
+
 }

@@ -17,13 +17,15 @@ import { MovieQuery } from './MovieDto/movie.query.dto';
 import { Updated_MovieDto } from './MovieDto/for_updated_movie.dto';
 import { deleteMovieFile } from 'src/common/utils/delere-utils';
 import * as path from 'path';
+import { Watch_History_Model } from 'src/core/entities/watch_history.entities';
 
 @Injectable()
 export class MoviesService {
   constructor(
     @InjectModel(Movies_Model) private moviesModel: typeof Movies_Model,
     @InjectModel(Movies_Files_Model) private moviesFileModel: typeof Movies_Files_Model,
-  ) {}
+    @InjectModel(Watch_History_Model) private watchModel: typeof Watch_History_Model
+  ) { }
 
   async getAll(query: MovieQuery) {
     try {
@@ -121,27 +123,38 @@ export class MoviesService {
     }
   }
 
-  async get_by_slug(slug: string) {
-    try {
-      let get_Slug = await this.moviesModel.findAll({
-        where: { slug },
-        include: [
-          { model: Movies_Files_Model, attributes: ['quality', 'language', 'size'] },
-          { model: Favorite_Model, attributes: ['movie_id'] },
-          { model: Review_Model, attributes: ['rating', 'comment'] },
-          { model: Categories_Model, attributes: ['name'] },
-        ],
-      });
+  async get_by_slug(user_id: string, slug: string) {
+  try {
+    const movie = await this.moviesModel.findOne({
+      where: { slug },
+      include: [
+        { model: Movies_Files_Model, attributes: ['quality', 'language', 'size'] },
+        { model: Favorite_Model, attributes: ['movie_id'] },
+        { model: Review_Model, attributes: ['rating', 'comment'] },
+        { model: Categories_Model, attributes: ['name'] },
+      ],
+    });
 
-      if (!get_Slug) throw new BadRequestException(`this ${slug} is not found`);
+    let createWatch = await this.watchModel.create({user_id: user_id, movie_id: movie?.dataValues.Id, watched_duration: 0, watched_persentage: 0})
 
-      return { success: true, data: get_Slug };
-    } catch (error) {
-      console.error('get_by_slug error:', error);
-      if (error instanceof BadRequestException) throw error;
-      throw new InternalServerErrorException(error.message);
+
+    if (!movie) {
+      throw new BadRequestException(`Movie with slug '${slug}' not found`);
     }
+
+
+    return {
+      success: true,
+      data: movie,
+      createWatch
+    };
+  } catch (error) {
+    console.error('get_by_slug error:', error);
+    if (error instanceof BadRequestException) throw error;
+    throw new InternalServerErrorException(error.message);
   }
+}
+
 
   async delete_movie(id: string) {
     try {
@@ -177,5 +190,9 @@ export class MoviesService {
       if (error instanceof NotFoundException) throw error;
       throw new InternalServerErrorException(error.message);
     }
+  }
+  async get_all() {
+    let all_movies = await this.moviesModel.findAll({include: [{model: Categories_Model, attributes: ['name']}]})
+    return all_movies
   }
 }
