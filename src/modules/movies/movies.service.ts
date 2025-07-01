@@ -130,7 +130,7 @@ export class MoviesService {
       include: [
         { model: Movies_Files_Model, attributes: ['quality', 'language', 'size'] },
         { model: Favorite_Model, attributes: ['movie_id'] },
-        { model: Review_Model, attributes: ['rating', 'comment'] },
+        { model: Review_Model, attributes: ['rating', 'comment', 'count'] },
         { model: Categories_Model, attributes: ['name'] },
       ],
     });

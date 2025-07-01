@@ -4,11 +4,6 @@ import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 
 export class ReviewDto{
-    @ApiProperty({ example: "Just UUID"})
-    @IsString()
-    @IsNotEmpty()
-    movie_id: string
-
 
     @ApiProperty({example: "4.5"})
     @IsNumber()

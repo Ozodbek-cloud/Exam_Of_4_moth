@@ -37,4 +37,6 @@ export class Review_Model extends Model {
   })
   comment: string;
 
+  @Column
+  count: number
 }

@@ -40,8 +40,8 @@ export class WatchHistoryService {
         where: { Id: id },
       });
       if (!affected) throw new NotFoundException('Yangilash uchun topilmadi');
-
-      const updated = await affected.update(payload);
+      const watched_percentage = (payload.watched_durations / affected.dataValues.duration_minutes) * 100;
+      const updated = await affected.update({...payload, watched_percentage: watched_percentage})
       return { success: true, data: updated };
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
