@@ -13,9 +13,8 @@ import { MoviesCategoryModule } from "src/modules/movies-category/movies-categor
 import { AdminModule } from "src/modules/admin/admin.module";
 import { ReviewModule } from "src/modules/review/review.module";
 import { WatchHistoryModule } from "src/modules/watch_history/watch_history.module";
-import { PaymentsModule } from "src/modules/payments/payments.module";
 
 @Module({
-    imports: [AuthModule, ProfilesModule, DatabaseModule, RedisModule, MailModule, SubscriptionPlanModule, MoviesModule, FavouritesModule, MoviesFilesModule,  CategoriesModule, MoviesCategoryModule, AdminModule, ReviewModule, WatchHistoryModule, PaymentsModule]
+    imports: [AuthModule, ProfilesModule, DatabaseModule, RedisModule, MailModule, SubscriptionPlanModule, MoviesModule, FavouritesModule, MoviesFilesModule,  CategoriesModule, MoviesCategoryModule, AdminModule, ReviewModule, WatchHistoryModule]
 })
 export class MainCore {}

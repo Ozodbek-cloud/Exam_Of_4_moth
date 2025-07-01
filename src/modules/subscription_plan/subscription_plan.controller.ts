@@ -5,7 +5,7 @@ import { SubscriptionPlanService } from './subscription_plan.service';
 import { Auth } from 'src/core/decorator/user.decorator';
 import { UserRole } from 'src/core/types/user.types';
 import { UserSubs } from './SubDto/userSubs_plan.dto';
-import { PaymentDto } from '../payments/Dto/payment_dto';
+import { PaymentDto } from './SubDto/payment_dto';
 
 @Controller('subscription-plan')
 export class SubscriptionPlanController {

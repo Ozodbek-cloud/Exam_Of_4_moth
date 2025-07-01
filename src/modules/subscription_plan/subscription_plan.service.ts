@@ -6,8 +6,8 @@ import { User_Subscriptions_Model } from 'src/core/entities/user_subscriptions.e
 import { UserSubs } from './SubDto/userSubs_plan.dto';
 import { Payments_Model } from 'src/core/entities/payments.entites';
 import { Payment_Status, Status } from 'src/core/types/user.types';
-import { PaymentDto } from '../payments/Dto/payment_dto';
-import { UpdatepaymentDto } from '../payments/Dto/updated_payment';
+import { PaymentDto } from './SubDto/payment_dto';
+import { UpdatepaymentDto } from './SubDto/updated_payment';
 
 @Injectable()
 export class SubscriptionPlanService {
@@ -76,11 +76,11 @@ export class SubscriptionPlanService {
                 userSubscription.update({ status: Status.ACTIVE })
 
                 return { succes: true, message: 'payment succes crteated !' }
+            } else if (payload.amount < sunscriptionPlan.price) {
+                await this.paymentModel.create({ ...payload, status: Payment_Status.COMPLETED })
+                return { succes: true, message: `qoldiq ${sunscriptionPlan.price - payload.amount}` }
             }
 
-            payload.amount < sunscriptionPlan.price
-            await this.paymentModel.create({ ...payload, status: Payment_Status.COMPLETED })
-            return { succes: true, message: `qoldiq ${sunscriptionPlan.price - payload.amount}` }
         } catch (error) {
             console.error(error)
             throw new InternalServerErrorException('Review qo‘shishda xatolik yuz berdi', error.message);
