@@ -123,7 +123,7 @@ export class MoviesService {
     }
   }
 
-  async get_by_slug(user_id: string, slug: string) {
+  async get_by_slug(slug: string, user_id: string) {
   try {
     const movie = await this.moviesModel.findOne({
       where: { slug },
@@ -135,7 +135,7 @@ export class MoviesService {
       ],
     });
 
-    let createWatch = await this.watchModel.create({user_id: user_id, movie_id: movie?.dataValues.Id, watched_duration: 0, watched_persentage: 0})
+    let createWatch = await this.watchModel.create({user_id: user_id, movie_id: movie?.dataValues.Id, watched_duration: 1, watched_persentage: 1.0})
 
 
     if (!movie) {

@@ -31,9 +31,9 @@ export class Payments_Model extends Model {
     payment_method: Payment_Method;
      
     @Column({
-        type: DataTypes.JSON,
-    })
-    payment_details: string;
+      type: DataTypes.ARRAY(DataTypes.STRING),
+   })
+    payment_details: string[];
 
     @Column({
         type: DataTypes.ENUM(...Object.values(Payment_Status))

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsUUID, IsNotEmpty, IsNumber, IsEnum, IsOptional, IsString, IsObject,
+import { IsUUID, IsNotEmpty, IsNumber, IsEnum, IsOptional, IsString, IsObject, IsArray,
 } from 'class-validator';
 import { Payment_Method, Payment_Status } from 'src/core/types/user.types';
 export class PaymentDto {
@@ -20,11 +20,10 @@ export class PaymentDto {
 
   @ApiProperty({
     description: 'Details about the payment (e.g., card info, transaction meta)',
-    type: Object,
   })
-  @IsObject()
+  @IsArray()
   @IsNotEmpty()
-  payment_details: Record<string, any>;
+  payment_details: string[];
 
   @ApiProperty({ enum: Payment_Status, example: Payment_Status.PENDING})
   @IsEnum(Payment_Status)

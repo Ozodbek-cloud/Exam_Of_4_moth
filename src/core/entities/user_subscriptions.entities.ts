@@ -30,16 +30,15 @@ export class User_Subscriptions_Model extends Model {
     subscriptions: Subscriptions_Plans_Model
 
     @Column({
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
+        type: DataTypes.STRING
     })
-    start_date: Date;
+    start_date: string;
 
     @Column({
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
 
     })
-    end_date: Date;
+    end_date: string;
   
     @Column({
         type: DataTypes.ENUM(...Object.values(Status)),

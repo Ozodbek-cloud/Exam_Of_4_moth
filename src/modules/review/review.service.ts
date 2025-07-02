@@ -23,12 +23,13 @@ export class ReviewService {
         ...payload,
         user_id: user,
         movie_id,
-        count: all
+        count: all.count
       });
     
       return { success: true, data: newReview};
     } catch (error) {
-      throw new InternalServerErrorException('Review qo‘shishda xatolik yuz berdi');
+      console.error(error)
+      throw new InternalServerErrorException('Review qo‘shishda xatolik yuz berdi', error.message);
     }
   }
 

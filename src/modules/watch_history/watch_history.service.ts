@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Watch_History_Model } from 'src/core/entities/watch_history.entities';
 import { WatchHistoryDto } from './WatchDto/dto';
@@ -35,19 +35,30 @@ export class WatchHistoryService {
   }
 
   async update(id: string, payload: UpdateWatchHistoryDto) {
-    try {
-      const affected = await this.watchHistoryModel.findOne({
-        where: { Id: id },
-      });
-      if (!affected) throw new NotFoundException('Yangilash uchun topilmadi');
-      const watched_percentage = (payload.watched_durations / affected.dataValues.duration_minutes) * 100;
-      const updated = await affected.update({...payload, watched_percentage: watched_percentage})
-      return { success: true, data: updated };
-    } catch (error) {
-      if (error instanceof NotFoundException) throw error;
-      throw new InternalServerErrorException('Yangilashda xatolik yuz berdi');
-    }
+  try {
+    const affected = await this.watchHistoryModel.findOne({ where: { Id: id } });
+
+    if (!affected) throw new NotFoundException('Yangilash uchun topilmadi');
+
+    const duration = affected.getDataValue('duration_minutes') || 0;
+
+    if (duration === 0)
+      throw new BadRequestException('duration_minutes 0 yoki mavjud emas');
+
+    const watched_percentage = (payload.watched_durations / duration) * 100;
+
+    const updated = await affected.update({
+      ...payload,
+      watched_percentage: Math.round(watched_percentage),
+    });
+
+    return { success: true, data: updated };
+  } catch (error) {
+    if (error instanceof NotFoundException || error instanceof BadRequestException) throw error;
+    throw new InternalServerErrorException('Yangilashda xatolik yuz berdi');
   }
+}
+
 
   async delete(id: string) {
     try {

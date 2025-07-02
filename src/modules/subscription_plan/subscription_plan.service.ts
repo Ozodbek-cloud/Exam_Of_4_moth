@@ -20,32 +20,40 @@ export class SubscriptionPlanService {
             return { success: true, data: newSubs }
         } catch (error) {
             console.error(error)
-            throw new InternalServerErrorException('Review qo‘shishda xatolik yuz berdi', error.message);
+            throw new InternalServerErrorException('qo‘shishda xatolik yuz berdi', error.message);
         }
     }
 
     async createUserSubs(user_id: string, payload: UserSubs) {
         try {
-            let plan = await this.subscriptionModel.findOne({
-                where: { Id: payload.plan_id }
-            })
+            const plan = await this.subscriptionModel.findOne({
+                where: { Id: payload.plan_id },
+            });
 
-            let date = new Date()
-            date.setDate(date.getTime() + plan!.duration_days * 24 * 60 * 1000)
-            if (!plan) throw new NotFoundException(`this ${payload.plan_id} is not found`)
-            let data = await this.userSubsMol.create({ ...payload, user_id, end_date: date })
+            if (!plan) {
+                throw new NotFoundException(`Plan not found: ${payload.plan_id}`);
+            }
+
+            const data = await this.userSubsMol.create({
+                ...payload,
+                user_id,
+            });
 
             return {
                 success: true,
                 data: data.dataValues,
-
-            }
+            };
         } catch (error) {
-            console.error(error)
-            throw new InternalServerErrorException('Review qo‘shishda xatolik yuz berdi', error.message);
-
+            console.error(error);
+            throw new InternalServerErrorException('qo‘shishda xatolik yuz berdi', {
+                cause: error,
+                description: error.message,
+            });
         }
     }
+
+
+
 
     async get_all_subs() {
         try {
@@ -55,38 +63,57 @@ export class SubscriptionPlanService {
             return all
         } catch (error) {
             console.error(error)
-            throw new InternalServerErrorException('Review qo‘shishda xatolik yuz berdi', error.message);
+            throw new InternalServerErrorException('qo‘shishda xatolik yuz berdi', error.message);
         }
     }
     async create_payment(payload: PaymentDto) {
         try {
-            if (payload.amount < 1) throw new BadRequestException('amount notog\'ri  !!!')
+            if (payload.amount < 1)
+                throw new BadRequestException("Amount noto'g'ri!");
 
-            const userSubscription = await this.userSubsMol.findByPk(payload.user_subscription_id)
-            if (!userSubscription) throw new NotFoundException('user Subscription not found !')
+            const userSubscription = await this.userSubsMol.findByPk(payload.user_subscription_id);
+            if (!userSubscription)
+                throw new NotFoundException("User subscription not found!");
 
-            const sunscriptionPlan = await this.subscriptionModel.findByPk(userSubscription.dataValues.plan_id)
-            if (!sunscriptionPlan) throw new NotFoundException('subscrip[tion plan not found !')
+            const subscriptionPlan = await this.subscriptionModel.findByPk(userSubscription.dataValues.plan_id);
+            if (!subscriptionPlan)
+                throw new NotFoundException("Subscription plan not found!");
 
-            if (sunscriptionPlan.is_active) throw new BadRequestException('subscriptionPlan not activate !')
+            if (subscriptionPlan.is_active)
+                throw new BadRequestException("Subscription plan is not active!");
 
-            if (payload.amount >= sunscriptionPlan.price) {
+            if (payload.amount >= subscriptionPlan.price) {
+                await this.paymentModel.create({
+                    ...payload,
+                    status: Payment_Status.COMPLETED,
+                });
 
-                await this.paymentModel.create({ ...payload, status: Payment_Status.COMPLETED })
-                userSubscription.update({ status: Status.ACTIVE })
+                await userSubscription.update({ status: Status.ACTIVE });
 
-                return { succes: true, message: 'payment succes crteated !' }
-            } else if (payload.amount < sunscriptionPlan.price) {
-                await this.paymentModel.create({ ...payload, status: Payment_Status.COMPLETED })
-                return { succes: true, message: `qoldiq ${sunscriptionPlan.price - payload.amount}` }
+                return {
+                    success: true,
+                    message: "To‘lov muvaffaqiyatli bajarildi!",
+                };
+            } else {
+                await this.paymentModel.create({
+                    ...payload,
+                    status: Payment_Status.PENDING,
+                });
+
+                return {
+                    success: true,
+                    message: `Qoldiq: ${subscriptionPlan.dataValues.price- payload.amount}`,
+                };
             }
-
         } catch (error) {
-            console.error(error)
-            throw new InternalServerErrorException('Review qo‘shishda xatolik yuz berdi', error.message);
+            console.error("Xatolik:", error);
+            throw new InternalServerErrorException(
+                "Sotib olishda qo‘shishda xatolik yuz berdi",
+                { cause: error, description: error.message }
+            );
         }
-
     }
+
 
 
     async update(payload: UpdatepaymentDto) {
